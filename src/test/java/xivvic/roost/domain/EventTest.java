@@ -14,9 +14,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import xivvic.roost.domain.Event;
-import xivvic.roost.domain.EventType;
-
 public class EventTest
 {
 

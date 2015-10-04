@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import xivvic.roost.dao.ValueObjectBuilder;
 import xivvic.roost.domain.Event;
 import xivvic.roost.domain.EventType;
 import xivvic.roost.domain.resolver.TabSeparatedStringValueProvider;

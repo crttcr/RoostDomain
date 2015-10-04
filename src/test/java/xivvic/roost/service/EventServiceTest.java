@@ -23,7 +23,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import xivvic.roost.dao.EventDao;
 import xivvic.roost.domain.Event;
 import xivvic.roost.domain.EventType;
-import xivvic.roost.service.EventService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventServiceTest

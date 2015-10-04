@@ -1,0 +1,5 @@
+/bin/
+/.apt_generated/
+/build/
+/gradle/
+/.gradle/

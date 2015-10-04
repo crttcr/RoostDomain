@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.List;
 
 import xivvic.roost.Nullable;
+import xivvic.util.ByteUtil;
 
 import com.google.auto.value.AutoValue;
-import xivvic.util.ByteUtil;
 
 /**
  *  

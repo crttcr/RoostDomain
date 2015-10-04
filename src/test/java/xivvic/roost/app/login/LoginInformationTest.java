@@ -12,8 +12,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import xivvic.roost.app.login.LoginInformation;
-
 public class LoginInformationTest
 {
 	private static final String user = "u_1";
