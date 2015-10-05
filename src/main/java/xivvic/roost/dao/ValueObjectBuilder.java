@@ -25,7 +25,6 @@ public class ValueObjectBuilder
 
 	private final static Logger LOG = Logger.getLogger(ValueObjectBuilder.class.getName()); 
 	private final static DateTimeFormatter DATE_FORMAT     = DateTimeFormatter.ISO_DATE;
-	private final static DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ISO_DATE_TIME;
 	private final static DateTimeFormatter TIME_FORMAT     = DateTimeFormatter.ISO_TIME;
 	
 	public ValueObjectBuilder()
@@ -256,7 +255,7 @@ public class ValueObjectBuilder
      	s = map.get(Event.PROP_TIME);
      	if (s != null)
      	{
-     		LocalTime lt = LocalTime.parse(s);
+     		LocalTime lt = LocalTime.parse(s, TIME_FORMAT);
      		if (lt != null)
      			time = lt;
      	}

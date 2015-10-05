@@ -584,10 +584,11 @@ public abstract class ActionBuilderBase
 	
 				try (Transaction tx = db.beginTx())
 				{
-					Result result = db.execute(cypher);
-					result.forEachRemaining(consumer);
-					result.close();
-					tx.success();
+					try (Result result = db.execute(cypher))
+					{
+						result.forEachRemaining(consumer);
+						tx.success();
+					}
 				}
 			}
 		};

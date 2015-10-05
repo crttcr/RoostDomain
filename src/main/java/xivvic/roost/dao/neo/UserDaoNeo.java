@@ -39,18 +39,18 @@ public class UserDaoNeo
 
 		try (Transaction tx = db.beginTx() )
 		{
-			ResourceIterator<Node> rit = db.findNodes(label);
-			
-			while (rit.hasNext())
+			try ( ResourceIterator<Node> rit = db.findNodes(label))
 			{
-				Node    node = rit.next();
-				User    user = node2User(node);
+				while (rit.hasNext())
+				{
+					Node    node = rit.next();
+					User    user = node2User(node);
 				
-				if (user != null)
-					users.add(user);
+					if (user != null)
+						users.add(user);
+				}
 			}
 
-			rit.close();
 			tx.success();
 		}
 
@@ -59,7 +59,7 @@ public class UserDaoNeo
 
 
 	// NOTE!
-	// This must be called in a transactional context
+	// This must be called within a transactional context
 	//
 	private User node2User(Node node)
 	{

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import xivvic.console.action.Action;
 import xivvic.console.action.ActionMetadata;
@@ -33,7 +32,7 @@ import xivvic.roost.service.ServiceLocator;
 public class ActionBuilderAddress
 	extends ActionBuilderBase
 {
-	private final static Logger LOG = Logger.getLogger(ActionBuilderAddress.class.getName());
+//	private final static Logger LOG = Logger.getLogger(ActionBuilderAddress.class.getName());
 	
 	public ActionBuilderAddress()
 	{
