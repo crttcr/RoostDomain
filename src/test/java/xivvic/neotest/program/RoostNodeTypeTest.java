@@ -95,12 +95,14 @@ public class RoostNodeTypeTest
 		
 		set.add(props[0]);
 		set.add(props[1]);
+		set.add(props[2]);
 		
 		// Assert
 		//
-		assertEquals(2, props.length);
+		assertEquals(3, props.length);
 		assertTrue(set.contains(User.PROP_ID));
 		assertTrue(set.contains(User.PROP_EMAIL));
+		assertTrue(set.contains(User.PROP_UNAME));
 	}
 
 	@Test

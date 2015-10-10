@@ -6,6 +6,12 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
+// Make this project as a Gradle project
+//
+eclipse.project 
+{
+  	natures 'org.springsource.ide.eclipse.gradle.core.nature'
+}
 
 // Declare where to find the dependencies of your project
 //
@@ -32,6 +38,7 @@ dependencies
 //	testCompile 'org.neo4j:neo4j-io:2.2.5'
 //	testCompile 'org.neo4j:neo4j-kernel-tests:2.2.5'
 	testCompile group: 'org.neo4j', name: 'neo4j-kernel', version: '2.2.5', classifier: 'tests'
+	testCompile group: 'org.neo4j', name: 'neo4j-io', version: '2.2.5', classifier: 'tests'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.0.31-beta'
 }

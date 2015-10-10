@@ -19,6 +19,7 @@ import xivvic.roost.domain.resolver.ValueProvider;
 
 public class ValueObjectBuilderPhysicalAddressTest
 {
+	private static final String HEADER = String.join("\t", "id", "lineOne", "lineTwo", "city", "state", "zip") +"\n";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception
@@ -52,12 +53,12 @@ public class ValueObjectBuilderPhysicalAddressTest
 	@Test
 	public void testBuildOneObject()
 	{
-		String input = "id\tlineOne\tlineTwo\tcity\tstate\tzip\n" +
+		String input = HEADER +
 				"XAB\t1570 Elmwood Ave\tApt. 1004\tEvanston\tIL\t60201";
-		ValueProvider vp = new TabSeparatedStringValueProvider(input);
-		
+
+		ValueProvider       vp = new TabSeparatedStringValueProvider(input);
 		ValueObjectBuilder vob = new ValueObjectBuilder();
-		List<Address> list = vob.createPhysicalAddresses(vp);
+		List<Address>     list = vob.createPhysicalAddresses(vp);
 		
 		assertNotNull(list);
 		assertTrue(1 == list.size());
@@ -70,9 +71,9 @@ public class ValueObjectBuilderPhysicalAddressTest
 	@Test
 	public void testBuildThreeObjects()
 	{
-		String input = "id\tlineOne\tlineTwo\tcity\tstate\tzip\n"      +
+		String input = HEADER                                           +
 				"ABC\t1570 Elmwood Ave\tApt. 1004\tEvanston\tIL\t60201\n" +
-				"\t2329 N. Leavitt St.\tUnit 3\tChicago\tIL\t\n" +
+				"BCE\t2329 N. Leavitt St.\tUnit 3\tChicago\tIL\t\n"          +
 				"CDE\t2725 Paran Valley Rd.\t\tAtlanta\tGA\t30327";
 		ValueProvider vp = new TabSeparatedStringValueProvider(input);
 		

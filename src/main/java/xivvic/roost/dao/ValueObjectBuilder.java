@@ -262,7 +262,15 @@ public class ValueObjectBuilder
 
      	s = map.get(Event.PROP_TYPE);
      	if (s != null)
+     	{
      		type = EventType.valueOf(s.toUpperCase());
+     	}
+     	else
+     	{
+     		String msg = String.format("Unable to obtain event type.  Cannot create event");
+     		LOG.warning(msg);
+     		return null;
+     	}
      	
 
       Event e = Event.create(id, date, time, type, text);

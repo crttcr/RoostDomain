@@ -112,6 +112,7 @@ public class AddressDaoNeo
 			String   zip = (String) node.getProperty(Address.PROP_ZIP);
 		
 			addr = Address.builder()
+				.id(id)
 				.lineOne(line1)
 				.lineTwo(line2)
 				.city(city)

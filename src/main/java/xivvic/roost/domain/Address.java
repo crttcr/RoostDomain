@@ -5,10 +5,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.auto.value.AutoValue;
+
 import xivvic.roost.Nullable;
 import xivvic.util.ByteUtil;
-
-import com.google.auto.value.AutoValue;
 
 /**
  *  
@@ -22,32 +22,22 @@ public abstract class Address
 {
 	public static final List<Address> EMPTY_LIST = Collections.<Address>emptyList();
 	
-	private String id = null;
-
 	public static final String PROP_ID          = "address_id";
-
 	public static final String PROP_LINE_ONE    = "address_line_one";
-
 	public static final String PROP_LINE_TWO    = "address_line_two";
-
 	public static final String PROP_CITY        = "address_city";
-
 	public static final String PROP_STATE       = "address_state";
-
 	public static final String PROP_ZIP         = "address_zip";
 	/**
 	 * Unique id for this address
 	 * 
 	 * @return
 	 */
-	public final String id()
+	public abstract String id();
+	
+	public final String digest()
 	{
-		if (id == null)
-		{
-			id = Address.digest(this);
-		}
-		
-		return id;
+		return Address.digest(this);
 	}
 	
 	/**
@@ -83,6 +73,7 @@ public abstract class Address
 	@AutoValue.Builder
 	public abstract static class Builder
 	{
+		public abstract Builder id(String id);
 		public abstract Builder lineOne(String lineOne);
 		public abstract Builder lineTwo(String lineTwo);
 		public abstract Builder city(String city);

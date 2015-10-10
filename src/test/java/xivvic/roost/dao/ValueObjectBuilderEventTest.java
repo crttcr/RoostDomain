@@ -24,6 +24,7 @@ import xivvic.roost.domain.resolver.ValueProvider;
 
 public class ValueObjectBuilderEventTest
 {
+	private static final String HEADER = String.join("\t", Event.PROP_ID, Event.PROP_DATE, Event.PROP_TYPE, Event.PROP_TEXT) + "\n";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception
@@ -57,8 +58,7 @@ public class ValueObjectBuilderEventTest
 	@Test
 	public void testBuildOneObject()
 	{
-		String input = "date\ttype\ttext\n"            +
-				"2015-06-13\tBirthday\tBab's Birthday"     ;
+		String input = HEADER + "XXA\t2015-06-13\tBirthday\tBab's Birthday";
 		
 		ValueProvider       vp = new TabSeparatedStringValueProvider(input);
 		ValueObjectBuilder vob = new ValueObjectBuilder();
@@ -88,10 +88,10 @@ public class ValueObjectBuilderEventTest
 	public void testBuildThreeObjects()
 	{
 		String input = 
-				"date\ttime\ttype\ttext\n"                          +
-				"\t2015-06-13 12:00\tGraduation\tGrace's Graduation\n"  +
-				"1971-04-28\t\tBirthday\tRana's Birthday\n"       +
-				"2015-06-13\t\tBirthday\tBab's Birthday"          ;
+				HEADER                                                      +
+				"XAA\t2015-06-13\tGraduation\tGrace's Graduation\n"         +
+				"XAB\t1971-04-28\tBirthday\tRana's Birthday\n"            +
+				"XAC\t2015-06-13\tBirthday\tBab's Birthday"               ;
 		
 		ValueProvider       vp = new TabSeparatedStringValueProvider(input);
 		ValueObjectBuilder vob = new ValueObjectBuilder();
