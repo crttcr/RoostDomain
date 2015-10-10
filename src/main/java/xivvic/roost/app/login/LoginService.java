@@ -4,23 +4,18 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import xivvic.roost.dao.UserDao;
+import xivvic.roost.domain.User;
+import xivvic.util.PasswordUtil;
 
 public class LoginService
 {
-	private final UserDao dao;
+	private final static Logger LOG = Logger.getLogger(LoginService.class.getName()); 
 	
 	private Map<String, LoginInformation> active_users = new HashMap<>();
-	private static Map<String, String> user_map = new HashMap<>();
-	
-	static
-	{
-		// TODO: Need to have a robust approach to user identity
-		//
-		user_map.put("reid", "abc");
-		user_map.put("rana", "abc");
-	}
+	private final UserDao dao;
 	
 	public LoginService(UserDao dao)
 	{
@@ -38,21 +33,48 @@ public class LoginService
 	 * 
 	 * @return a session key upon success, and null if failure
 	 */
-	public String login(String user_name, String secret)
+	public String login(String user_name, String password)
 	{
 		if (user_name == null)
 			return null;
 
-		if (secret == null)
+		if (password == null)
 			return null;
 
-		String stored_secret = user_map.get(user_name);
+		User user = dao.findByUserName(user_name);
+		if (user == null)
+		{
+			String msg = String.format("User [%s] not found", user_name);
+			LOG.info(msg);
+			return null;
+		}
 		
+		String stored_secret = user.passhash();
 		if (stored_secret == null)
+		{
+			String msg = String.format("User [%s] not found", user_name);
+			LOG.info(msg);
 			return null;
+		}
 		
-		if (! secret.equals(stored_secret))
+		boolean match = false;
+		try
+		{
+			match = PasswordUtil.check(password, stored_secret);
+		}
+		catch (Exception e)
+		{
+			String msg = String.format("Exception checking password: %s", e.getLocalizedMessage());
+			LOG.info(msg);
 			return null;
+		}
+		
+		if (! match)
+		{
+			String msg = String.format("User password failed check.");
+			LOG.info(msg);
+			return null;
+		}
 		
 		String key = UUID.randomUUID().toString();
 		
