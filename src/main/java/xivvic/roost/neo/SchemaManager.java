@@ -339,7 +339,7 @@ public class SchemaManager
 		PropMeta b = PropMetaBase.builder()
 				.type(String.class)
 				.name("first name")
-				.key("person_name")
+				.key("person_name_first")
 				.unique(false)
 				.required(true)
 				.build();
