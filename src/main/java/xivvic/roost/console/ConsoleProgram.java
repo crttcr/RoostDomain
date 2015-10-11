@@ -10,6 +10,8 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.schema.ConstraintDefinition;
 import org.neo4j.graphdb.schema.Schema;
 
+import console.menu.BatchAction;
+import console.menu.MenuManager;
 import xivvic.command.CommandHandlerFactory;
 import xivvic.command.CommandProcessor;
 import xivvic.command.CommandProcessorImpl;
@@ -37,15 +39,12 @@ import xivvic.roost.domain.resolver.ObjectRepositoryBase;
 import xivvic.roost.neo.task.Handlers;
 import xivvic.roost.neo.task.NeoCommandHandlerFactory;
 import xivvic.roost.service.AddressService;
-import xivvic.roost.service.DomainObjectLoader;
 import xivvic.roost.service.EventService;
 import xivvic.roost.service.GroupService;
 import xivvic.roost.service.PersonService;
 import xivvic.roost.service.ServiceLocator;
 import xivvic.roost.service.SubscriptionService;
 import xivvic.roost.service.UserService;
-import console.menu.BatchAction;
-import console.menu.MenuManager;
 
 
 /** 
@@ -169,9 +168,9 @@ public class ConsoleProgram
 		locator.add(ServiceLocator.SERVICE_SUBSCRIPTION,    subs);
 		locator.add(ServiceLocator.SERVICE_USER,            user);
 		locator.add(ServiceLocator.COMMAND_PROCESSOR,      cproc);
-
-		DomainObjectLoader loader = new DomainObjectLoader();
-		loader.loadDomainObjects();
+//
+//		DomainObjectLoader loader = new DomainObjectLoader();
+//		loader.loadDomainObjects();
 	}
 
 	protected static void initializeResources()
