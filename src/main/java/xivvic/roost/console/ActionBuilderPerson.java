@@ -80,8 +80,12 @@ public class ActionBuilderPerson
 
 		NodeSchema schema = SchemaManager.getInstance().getEntitySchema(Person.class);
 
-		for (PropMeta pm : schema.properties(PropPredicate.predicateRequired()))
-			required.add(pm.key());
+		PropPredicate pred = PropPredicate.predicateRequired();
+		for (PropMeta pm : schema.properties(pred))
+		{
+			String key = pm.key();
+			required.add(key);
+		}
 
 		map.put(NeoTaskInfo.NODE_ONE_SCHEMA, schema);
 
