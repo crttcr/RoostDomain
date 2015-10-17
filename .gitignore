@@ -3,3 +3,5 @@
 /build/
 /gradle/
 /.gradle/
+/db/
+/.apt_generated2/

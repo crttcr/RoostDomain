@@ -1,4 +1,4 @@
-package xivvic.roost.console;
+package xivvic.roost.console.action;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,7 +16,7 @@ import xivvic.console.action.ActionBase;
 import xivvic.console.action.ActionMetadata;
 import xivvic.console.input.InputProcessor;
 import xivvic.console.input.InputProcessorSingleInteger;
-import xivvic.roost.service.ServiceLocator;
+import xivvic.roost.console.ProgramState;
 import xivvic.util.text.StringUtil;
 
 /**
@@ -102,7 +102,7 @@ public class ActionBuilderConfiguration
 		String               name = ActionBuilder.ADMIN_NEO_LIST_NODES;
 		String              usage = "list";
 		String               desc = "Lists All Neo Nodes";
-		ActionMetadata       meta = new ActionMetadata(name, desc, usage, ServiceLocator.SERVICE_EVENT);
+		ActionMetadata       meta = new ActionMetadata(name, desc, usage);
 		String               cypher = "MATCH (n) RETURN n";
 		
 		Consumer<Map<String, Object>> function = m -> dump((Node) m.get("n"));
@@ -116,7 +116,7 @@ public class ActionBuilderConfiguration
 		String               name = ActionBuilder.ADMIN_NEO_LIST_RELS;
 		String              usage = "list";
 		String               desc = "Lists All Neo Relationships";
-		ActionMetadata       meta = new ActionMetadata(name, desc, usage, ServiceLocator.SERVICE_EVENT);
+		ActionMetadata       meta = new ActionMetadata(name, desc, usage);
 		String               cypher = "MATCH (n)-[r]-() RETURN r";
 		
 		Consumer<Map<String, Object>> function = m -> dump((Relationship) m.get("r"));

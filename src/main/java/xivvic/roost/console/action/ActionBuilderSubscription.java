@@ -1,4 +1,4 @@
-package xivvic.roost.console;
+package xivvic.roost.console.action;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,6 +16,9 @@ import xivvic.console.action.ActionMetadata;
 import xivvic.console.input.InputProcessor;
 import xivvic.console.input.InputProcessorNVPairs;
 import xivvic.neotest.program.RoostRelType;
+import xivvic.roost.console.DaggerProgramComponents;
+import xivvic.roost.console.ProgramComponents;
+import xivvic.roost.domain.DomainEntity;
 import xivvic.roost.domain.Event;
 import xivvic.roost.domain.Subscription;
 import xivvic.roost.domain.User;
@@ -27,7 +30,6 @@ import xivvic.roost.neo.PropMeta;
 import xivvic.roost.neo.PropPredicate;
 import xivvic.roost.neo.SchemaManager;
 import xivvic.roost.neo.task.NeoTaskInfo;
-import xivvic.roost.service.ServiceLocator;
 import xivvic.roost.service.SubscriptionService;
 import xivvic.util.identity.RandomString;
 
@@ -50,10 +52,32 @@ public class ActionBuilderSubscription
 	{
 		String               name = ActionBuilder.SUBSCRIPTION_LIST;
 		final String         desc = "Lists all subscriptions.";
-		String              usage = "list";
-		ActionMetadata       meta = new ActionMetadata(name, desc, usage, ServiceLocator.SERVICE_SUBSCRIPTION);
-		InputProcessor        aip = null;
-		Action             action = ActionBuilderBase.buildListAction(meta, aip);
+		Action             action = new ActionBase(name, desc, true)
+		{
+			@Override
+			protected void internal_invoke(Object param)
+			{
+				if (param != null)
+				{
+					String   msg = String.format(name + ": called with param [%s]. Not used.", param);
+					LOG.info(msg);
+				}
+				
+				ProgramComponents    components = DaggerProgramComponents.create();
+				SubscriptionService     service = components.subscriptionService();
+				if (service == null)
+				{
+					String   msg = String.format(name + ": DI returned null service");
+					LOG.severe(msg);
+					return;
+				}
+
+				Consumer<DomainEntity>   printer = e -> System.out.println(e);
+				System.out.println("Subscriptions");
+				service.apply(printer);
+			}
+		};
+		
 		return action;
 	}
 	
@@ -152,17 +176,11 @@ public class ActionBuilderSubscription
 					return;
 				}
 				
-				SubscriptionService svc  = (SubscriptionService) ServiceLocator.locator().get(ServiceLocator.SERVICE_SUBSCRIPTION);
-				if (svc == null)
-				{
-					String   msg = String.format(meta.name() + ": Could not locate service [%s]. Abort.", ServiceLocator.SERVICE_SUBSCRIPTION);
-					LOG.severe(msg);
-					return;
-				}
-
+				ProgramComponents      components = DaggerProgramComponents.create();
+				SubscriptionService       service = components.subscriptionService();
 				String                        uid = (String) map.get(User.PROP_ID);
 				Consumer<Subscription>    printer = e -> System.out.println(e);
-				List<Subscription>  subscriptions = svc.subscriptionsForUser(uid);
+				List<Subscription>  subscriptions = service.subscriptionsForUser(uid);
 
 				System.out.println("Subscriptions:");
 				subscriptions.forEach(printer);
@@ -198,17 +216,11 @@ public class ActionBuilderSubscription
 					return;
 				}
 				
-				SubscriptionService svc  = (SubscriptionService) ServiceLocator.locator().get(ServiceLocator.SERVICE_SUBSCRIPTION);
-				if (svc == null)
-				{
-					String   msg = String.format(meta.name() + ": Could not locate service [%s]. Abort.", ServiceLocator.SERVICE_SUBSCRIPTION);
-					LOG.severe(msg);
-					return;
-				}
-
+				ProgramComponents      components = DaggerProgramComponents.create();
+				SubscriptionService       service = components.subscriptionService();
 				Consumer<Subscription>    printer = e -> System.out.println(e);
 				String                   event_id = (String) map.get(Event.PROP_ID);
-				List<Subscription>  subscriptions = svc.subscriptionsForEvent(event_id);
+				List<Subscription>  subscriptions = service.subscriptionsForEvent(event_id);
 
 				System.out.println("Subscriptions:");
 				subscriptions.forEach(printer);

@@ -266,12 +266,6 @@ public class SchemaManager
 		entities.put(Subscription.class, schema);
 	}
 
-	public static final String    PROP_ID = "user_id";
-	public static final String PROP_EMAIL = "user_email";
-	public static final String PROP_UNAME = "user_username";
-	public static final String PROP_PHASH = "user_passhash";
-	public static final String  PROP_SALT = "user_salt";
-
 	private void buildUser()
 	{
 		List<PropMeta> p_list = new ArrayList<>();
@@ -301,15 +295,15 @@ public class SchemaManager
 				.type(String.class)
 				.name("password hash")
 				.key("user_passhash")
-				.unique(true)
+				.unique(false)
 				.required(true)
 				.build();
 		PropMeta e = PropMetaBase.builder()
 				.type(String.class)
 				.name("salt")
 				.key("user_salt")
-				.unique(true)
-				.required(true)
+				.unique(false)
+				.required(false)
 				.build();
 			
 		p_list.add(a);

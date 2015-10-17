@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import xivvic.console.action.Action;
 import xivvic.console.action.DummyAction;
+import xivvic.roost.console.action.ActionRegistry;
 
 public class ActionRegistryTest
 {

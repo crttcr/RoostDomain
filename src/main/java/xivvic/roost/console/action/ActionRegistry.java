@@ -1,4 +1,4 @@
-package xivvic.roost.console;
+package xivvic.roost.console.action;
 
 import java.util.HashMap;
 import java.util.Map;

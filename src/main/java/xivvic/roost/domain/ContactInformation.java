@@ -4,9 +4,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import xivvic.roost.Nullable;
-
 import com.google.auto.value.AutoValue;
+
+import xivvic.roost.Nullable;
 
 /**
  * Immutable class representing contact information

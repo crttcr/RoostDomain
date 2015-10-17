@@ -5,9 +5,9 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
-import xivvic.event.Nullable;
-
 import com.google.auto.value.AutoValue;
+
+import xivvic.event.Nullable;
 
 /** 
  * Immutable Event value object

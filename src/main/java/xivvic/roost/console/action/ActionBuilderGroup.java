@@ -1,4 +1,4 @@
-package xivvic.roost.console;
+package xivvic.roost.console.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,12 +6,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 import xivvic.console.action.Action;
+import xivvic.console.action.ActionBase;
 import xivvic.console.action.ActionMetadata;
 import xivvic.console.input.InputProcessor;
 import xivvic.console.input.InputProcessorNVPairs;
 import xivvic.neotest.program.RoostRelType;
+import xivvic.roost.console.DaggerProgramComponents;
+import xivvic.roost.console.ProgramComponents;
+import xivvic.roost.domain.DomainEntity;
 import xivvic.roost.domain.Group;
 import xivvic.roost.domain.Person;
 import xivvic.roost.neo.EdgeSchema;
@@ -23,7 +29,7 @@ import xivvic.roost.neo.PropMeta;
 import xivvic.roost.neo.PropPredicate;
 import xivvic.roost.neo.SchemaManager;
 import xivvic.roost.neo.task.NeoTaskInfo;
-import xivvic.roost.service.ServiceLocator;
+import xivvic.roost.service.GroupService;
 
 /**
  * Builds Group actions for the application.
@@ -34,7 +40,7 @@ import xivvic.roost.service.ServiceLocator;
 public class ActionBuilderGroup
 	extends ActionBuilderBase
 {
-//	private final static Logger LOG = Logger.getLogger(ActionBuilderGroup.class.getName());
+	private final static Logger LOG = Logger.getLogger(ActionBuilderGroup.class.getName());
 	
 	public ActionBuilderGroup()
 	{
@@ -44,10 +50,32 @@ public class ActionBuilderGroup
 	{
 		String               name = ActionBuilder.GROUP_LIST;
 		final String          desc = "Lists all groups.";
-		String              usage = "list";
-		ActionMetadata       meta = new ActionMetadata(name, desc, usage, ServiceLocator.SERVICE_GROUP);
-		InputProcessor  ip = null;
-		Action             action = ActionBuilderBase.buildListAction(meta, ip);
+		Action             action = new ActionBase(name, desc, true)
+		{
+			@Override
+			protected void internal_invoke(Object param)
+			{
+				if (param != null)
+				{
+					String   msg = String.format(name + ": called with param [%s]. Not used.", param);
+					LOG.info(msg);
+				}
+				
+				ProgramComponents components = DaggerProgramComponents.create();
+				GroupService         service = components.groupService();
+				if (service == null)
+				{
+					String   msg = String.format(name + ": DI returned null service");
+					LOG.severe(msg);
+					return;
+				}
+
+				Consumer<DomainEntity>   printer = e -> System.out.println(e);
+				System.out.println("Groups");
+				service.apply(printer);
+			}
+		};
+		
 		return action;
 	}
 	
@@ -56,7 +84,6 @@ public class ActionBuilderGroup
 		String               name = ActionBuilder.GROUP_LIST_MEMBERS;
 		final String         desc = "Lists members for a specified group.";
 		String              usage = "list group_id:g123";
-		ActionMetadata       meta = new ActionMetadata(name, desc, usage, ServiceLocator.SERVICE_GROUP);
 		Set<String>      required = new HashSet<>();
 		Map<String, Object>   map = new HashMap<>();
 
@@ -68,7 +95,32 @@ public class ActionBuilderGroup
 		map.put(NeoTaskInfo.NODE_ONE_LOCATOR, finder);
 		
 		InputProcessor  ip = new InputProcessorNVPairs(map, required, null);
-		Action      action = ActionBuilderBase.buildListGroupMembersAction(meta, ip);
+
+		Action action = new ActionBase(name, desc, true)
+		{
+			@Override
+			protected void internal_invoke(Object param)
+			{
+				String           params = (String) param;
+				Map<String, Object> map = ip.process(params);
+				if (map == null)
+				{
+					String   msg = String.format("Error\nUsage: \n%s", usage);
+					System.err.println(msg);
+					return;
+				}
+					
+				ProgramComponents components = DaggerProgramComponents.create();
+				GroupService         service = components.groupService();
+				String                   gid = (String) map.get("group_id");
+				List<Person>            list = service.listMembers(gid);
+
+				Consumer<Person>   printer = p -> System.out.println(p);
+				System.out.println(name + "s:");
+				list.forEach(printer);
+			}
+		};
+			
 		return action;
 	}
 	

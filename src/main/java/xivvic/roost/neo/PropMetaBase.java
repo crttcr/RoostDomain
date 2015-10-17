@@ -2,9 +2,9 @@ package xivvic.roost.neo;
 
 import java.util.function.Function;
 
-import xivvic.roost.Nullable;
-
 import com.google.auto.value.AutoValue;
+
+import xivvic.roost.Nullable;
 
 @AutoValue
 public abstract class PropMetaBase

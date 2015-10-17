@@ -1,4 +1,4 @@
-package xivvic.roost.console;
+package xivvic.roost.console.action;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,6 +16,9 @@ import xivvic.console.action.ActionMetadata;
 import xivvic.console.input.InputProcessor;
 import xivvic.console.input.InputProcessorNVPairs;
 import xivvic.neotest.program.RoostRelType;
+import xivvic.roost.console.DaggerProgramComponents;
+import xivvic.roost.console.ProgramComponents;
+import xivvic.roost.domain.DomainEntity;
 import xivvic.roost.domain.Event;
 import xivvic.roost.domain.Person;
 import xivvic.roost.neo.EdgeSchema;
@@ -26,7 +29,6 @@ import xivvic.roost.neo.PropMeta;
 import xivvic.roost.neo.SchemaManager;
 import xivvic.roost.neo.task.NeoTaskInfo;
 import xivvic.roost.service.EventService;
-import xivvic.roost.service.ServiceLocator;
 import xivvic.util.TimeUtil;
 import xivvic.util.identity.RandomString;
 
@@ -49,10 +51,32 @@ public class ActionBuilderEvent
 	{
 		String               name = ActionBuilder.EVENT_LIST;
 		final String         desc = "Lists all events.";
-		String              usage = "list";
-		ActionMetadata       meta = new ActionMetadata(name, desc, usage, ServiceLocator.SERVICE_EVENT);
-		InputProcessor  ip = null;
-		Action             action = ActionBuilderBase.buildListAction(meta, ip);
+		Action             action = new ActionBase(name, desc, true)
+		{
+			@Override
+			protected void internal_invoke(Object param)
+			{
+				if (param != null)
+				{
+					String   msg = String.format(name + ": called with param [%s]. Not used.", param);
+					LOG.info(msg);
+				}
+				
+				ProgramComponents components = DaggerProgramComponents.create();
+				EventService         service = components.eventService();
+				if (service == null)
+				{
+					String   msg = String.format(name + ": DI returned null service");
+					LOG.severe(msg);
+					return;
+				}
+
+				Consumer<DomainEntity>   printer = e -> System.out.println(e);
+				System.out.println("events");
+				service.apply(printer);
+			}
+		};
+		
 		return action;
 	}
 	
@@ -123,7 +147,6 @@ public class ActionBuilderEvent
 		String               name = ActionBuilder.EVENT_LIST_FOR_PERSON;
 		String               desc = "Lists the events related to a person (not subscriptions)";
 		String              usage = "lfp person_id:p123";
-		String           svc_name = ServiceLocator.SERVICE_EVENT;
 		ActionMetadata       meta = new ActionMetadata(name, desc, usage);
 		Set<String>      required = new HashSet<>();
 		Map<String, Object>   map = new HashMap<>();
@@ -146,17 +169,11 @@ public class ActionBuilderEvent
 					return;
 				}
 				
-				EventService svc  = (EventService) ServiceLocator.locator().get(svc_name);
-				if (svc == null)
-				{
-					String   msg = String.format(meta.name() + ": Could not locate service [%s]. Abort.", svc_name);
-					LOG.severe(msg);
-					return;
-				}
-
-				String              pid = (String) map.get(Person.PROP_ID);
-				List<Event>      events = svc.eventsForPerson(pid);
-				Consumer<Event> printer = e -> System.out.println(e);
+				ProgramComponents components = DaggerProgramComponents.create();
+				EventService         service = components.eventService();
+				String                   pid = (String) map.get(Person.PROP_ID);
+				List<Event>           events = service.eventsForPerson(pid);
+				Consumer<Event>      printer = e -> System.out.println(e);
 
 				System.out.println("Events:");
 				events.forEach(printer);

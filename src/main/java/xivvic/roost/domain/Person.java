@@ -3,9 +3,9 @@ package xivvic.roost.domain;
 import java.util.Collections;
 import java.util.List;
 
-import xivvic.roost.Nullable;
-
 import com.google.auto.value.AutoValue;
+
+import xivvic.roost.Nullable;
 
 /**
  * Immutable value object representing a person

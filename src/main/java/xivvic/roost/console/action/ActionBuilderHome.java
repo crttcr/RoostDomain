@@ -1,4 +1,4 @@
-package xivvic.roost.console;
+package xivvic.roost.console.action;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -6,13 +6,15 @@ import java.util.logging.Logger;
 
 import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
+import xivvic.roost.console.DaggerProgramComponents;
+import xivvic.roost.console.ProgramComponents;
+import xivvic.roost.console.ProgramState;
 import xivvic.roost.domain.Event;
 import xivvic.roost.domain.Group;
 import xivvic.roost.domain.Person;
 import xivvic.roost.domain.Subscription;
 import xivvic.roost.domain.User;
 import xivvic.roost.service.EventService;
-import xivvic.roost.service.ServiceLocator;
 import xivvic.roost.service.SubscriptionService;
 import xivvic.roost.service.UserService;
 
@@ -80,17 +82,19 @@ public class ActionBuilderHome
 
 	protected static void displayEventsForPerson(Person person)
 	{
-		EventService         u_svc = (EventService) ServiceLocator.locator().get(ServiceLocator.SERVICE_USER);
-		List<Event>          users = u_svc.list();
-		Consumer<Event>       cons = (u) -> System.out.println(u);
+		ProgramComponents  components = DaggerProgramComponents.create();
+		EventService          service = components.eventService();
+		List<Event>             users = service.eventsForPerson(person.id());
+		Consumer<Event>          cons = (u) -> System.out.println(u);
 
 		users.forEach(cons);
 	}
 
 	protected static void displaySubscriptionsForUser(User user)
 	{
-		SubscriptionService     svc = (SubscriptionService) ServiceLocator.locator().get(ServiceLocator.SERVICE_SUBSCRIPTION);
-		List<Subscription>     subs = svc.list();
+		ProgramComponents    components = DaggerProgramComponents.create();
+		SubscriptionService     service = components.subscriptionService();
+		List<Subscription>     subs = service.subscriptionsForUser(user.id());
 		Consumer<Subscription> cons = (s) -> System.out.println(s);
 
 		subs.forEach(cons);
@@ -98,8 +102,9 @@ public class ActionBuilderHome
 
 	static void displayUsers()
 	{
-		UserService         u_svc = (UserService) ServiceLocator.locator().get(ServiceLocator.SERVICE_USER);
-		List<User>          users = u_svc.list();
+		ProgramComponents    components = DaggerProgramComponents.create();
+		UserService             service = components.userService();
+		List<User>                users = service.list();
 		Consumer<User>       cons = (u) -> System.out.println(u);
 
 		users.forEach(cons);

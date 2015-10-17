@@ -1,5 +1,6 @@
 package xivvic.roost.neo.task;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -15,11 +16,16 @@ import xivvic.command.CommandResult;
 import xivvic.command.CommandStatus;
 import xivvic.neotest.program.RoostNodeType;
 import xivvic.neotest.program.RoostRelType;
+import xivvic.roost.console.action.ActionBuilderUser;
 import xivvic.roost.domain.User;
+import xivvic.roost.neo.DomainSchema;
 import xivvic.roost.neo.EdgeFinder;
 import xivvic.roost.neo.NodeFinder;
 import xivvic.roost.neo.NodeSchema;
 import xivvic.roost.neo.PropMeta;
+import xivvic.roost.neo.PropPredicate;
+import xivvic.roost.neo.SchemaManager;
+import xivvic.util.PasswordUtil;
 import xivvic.util.identity.RandomString;
 
 /*
@@ -37,7 +43,8 @@ public class RegisterUser
 	extends NeoCommandHandler
 	implements CommandHandler
 {
-	private final static Logger       LOG = Logger.getLogger(RegisterUser.class.getName());
+	private final static Logger          LOG = Logger.getLogger(RegisterUser.class.getName());
+	private final DomainSchema schemaManager = SchemaManager.getInstance();
 
 	public RegisterUser(GraphDatabaseService db, Command command)
 	{
@@ -137,7 +144,7 @@ public class RegisterUser
 			//
 			if (p_node == null)
 			{
-				String fmt = "RegisterUser: Failed to find group: [%s] -> [%s]";
+				String fmt = "RegisterUser: Failed to find person: [%s] -> [%s]";
 				String msg = String.format(fmt, p_finder.prop().name(), p_finder.value());
 				LOG.warning(msg);
 				tx.success();
@@ -160,20 +167,42 @@ public class RegisterUser
 			
 			// Ensure that the User node's unique properties aren't already taken by nodes in the database
 			//
-			String[] unique_props = RoostNodeType.USER.uniqueProperties();
-			for (String unique_prop : unique_props)
+			NodeSchema node_schema = schemaManager.getEntitySchema(RoostNodeType.USER.getClass());
+			List<PropMeta> lpm = node_schema.properties(PropPredicate.predicateUnique());
+			for (PropMeta prop_def : lpm)
 			{
-				String  value = (String) data.get(unique_prop);
-				Node existing = db.findNode(u_schema.type(), unique_prop, value);
+				String    key = prop_def.key();
+				String  value = (String) data.get(key);
+				Node existing = db.findNode(u_schema.type(), key, value);
 				if (existing != null)
 				{
-					String msg = String.format("User with property [%s] -> [%s] already exists. This property must be unique.", unique_prop, value);
+					String msg = String.format("User with property [%s] -> [%s] already exists. This property must be unique.", key, value);
 					LOG.warning(msg);
 					tx.success();
 					cmd.setStatus(CommandStatus.FAILED);
 					CommandResult result = CommandResult.failure(cmd.id(), msg);
 					return result;
 				}
+			}
+			
+			// Create the users's password hash
+			//
+			// FIXME: Populate this in the data
+			//
+			String password = (String) data.get(ActionBuilderUser.PLAINTEXT);
+			
+			
+			try
+			{
+				String     hash = PasswordUtil.getSaltedHash(password);
+				data.put(User.PROP_PHASH, hash);
+			}
+			catch (Exception e)
+			{
+				tx.failure();
+				String           msg = "Unable to compute password hash: " + e.getLocalizedMessage();
+				CommandResult result = CommandResult.failure(cmd.id(), msg);
+				return        result;
 			}
 			
 			// Create USER node and set all properties

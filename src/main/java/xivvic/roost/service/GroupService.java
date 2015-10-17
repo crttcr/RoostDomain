@@ -50,6 +50,13 @@ public class GroupService
 		return dao.findById(group_id);
 	}
 
+	public Group findByName(String name)
+	{
+		if (name == null) return null;
+
+		return dao.findByName(name);
+	}
+
 
 	@Override
 	public boolean apply(Consumer<DomainEntity> consumer)
@@ -59,5 +66,7 @@ public class GroupService
 		groups.forEach(consumer);
 		return true;
 	}
+
+
 		
 }

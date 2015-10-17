@@ -9,13 +9,13 @@ public class ServiceLocator
 	
 	// TODO: Now that I have DAOs.  Do I need an Object Repo?
 	public static final String REPO_OBJECT          = "repo.object";
-	public static final String SERVICE_ADDRESS      = "service.address";
-	public static final String SERVICE_EVENT        = "service.event";
-	public static final String SERVICE_LOGIN        = "service.login";
-	public static final String SERVICE_USER         = "service.user";
-	public static final String SERVICE_GROUP        = "service.group";
-	public static final String SERVICE_PERSON       = "service.person";
-	public static final String SERVICE_SUBSCRIPTION = "service.subscription";
+//	public static final String SERVICE_ADDRESS      = "service.address";
+//	public static final String SERVICE_EVENT        = "service.event";
+//	public static final String SERVICE_LOGIN        = "service.login";
+//	public static final String SERVICE_USER         = "service.user";
+//	public static final String SERVICE_GROUP        = "service.group";
+//	public static final String SERVICE_PERSON       = "service.person";
+//	public static final String SERVICE_SUBSCRIPTION = "service.subscription";
 
 	private ServiceLocator()
 	{

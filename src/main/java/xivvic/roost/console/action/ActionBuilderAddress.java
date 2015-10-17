@@ -1,17 +1,23 @@
-package xivvic.roost.console;
+package xivvic.roost.console.action;
 
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 import xivvic.console.action.Action;
+import xivvic.console.action.ActionBase;
 import xivvic.console.action.ActionMetadata;
 import xivvic.console.input.InputProcessor;
 import xivvic.console.input.InputProcessorNVPairs;
 import xivvic.neotest.program.RoostRelType;
+import xivvic.roost.console.DaggerProgramComponents;
+import xivvic.roost.console.ProgramComponents;
 import xivvic.roost.domain.Address;
+import xivvic.roost.domain.DomainEntity;
 import xivvic.roost.domain.Person;
 import xivvic.roost.neo.EdgeSchema;
 import xivvic.roost.neo.NodeFinder;
@@ -21,7 +27,7 @@ import xivvic.roost.neo.PropMeta;
 import xivvic.roost.neo.PropPredicate;
 import xivvic.roost.neo.SchemaManager;
 import xivvic.roost.neo.task.NeoTaskInfo;
-import xivvic.roost.service.ServiceLocator;
+import xivvic.roost.service.AddressService;
 
 /**
  * Builds Address actions for the application.
@@ -32,7 +38,7 @@ import xivvic.roost.service.ServiceLocator;
 public class ActionBuilderAddress
 	extends ActionBuilderBase
 {
-//	private final static Logger LOG = Logger.getLogger(ActionBuilderAddress.class.getName());
+	private final static Logger LOG = Logger.getLogger(ActionBuilderAddress.class.getName());
 	
 	public ActionBuilderAddress()
 	{
@@ -42,10 +48,32 @@ public class ActionBuilderAddress
 	{
 		String               name = ActionBuilder.ADDRESS_LIST;
 		String               desc = "Displays all addresses";
-		String              usage = "list";
-		ActionMetadata       meta = new ActionMetadata(name, desc, usage, ServiceLocator.SERVICE_ADDRESS);
-		InputProcessor         ip = null;
-		Action             action = ActionBuilderBase.buildListAction(meta, ip);
+		Action             action = new ActionBase(name, desc, true)
+		{
+			@Override
+			protected void internal_invoke(Object param)
+			{
+				if (param != null)
+				{
+					String   msg = String.format(name + ": called with param [%s]. Not used.", param);
+					LOG.info(msg);
+				}
+				
+				ProgramComponents components = DaggerProgramComponents.create();
+				AddressService       service = components.addressService();
+				if (service == null)
+				{
+					String   msg = String.format(name + ": DI returned null service");
+					LOG.severe(msg);
+					return;
+				}
+
+				Consumer<DomainEntity>   printer = e -> System.out.println(e);
+				System.out.println("addresses");
+				service.apply(printer);
+			}
+		};
+		
 		return action;
 	}
 	

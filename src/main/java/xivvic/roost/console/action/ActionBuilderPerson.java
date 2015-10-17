@@ -1,14 +1,20 @@
-package xivvic.roost.console;
+package xivvic.roost.console.action;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 import xivvic.console.action.Action;
+import xivvic.console.action.ActionBase;
 import xivvic.console.action.ActionMetadata;
 import xivvic.console.input.InputProcessor;
 import xivvic.console.input.InputProcessorNVPairs;
+import xivvic.roost.console.DaggerProgramComponents;
+import xivvic.roost.console.ProgramComponents;
+import xivvic.roost.domain.DomainEntity;
 import xivvic.roost.domain.Person;
 import xivvic.roost.neo.NodeFinder;
 import xivvic.roost.neo.NodeFinderEmpty;
@@ -17,7 +23,7 @@ import xivvic.roost.neo.PropMeta;
 import xivvic.roost.neo.PropPredicate;
 import xivvic.roost.neo.SchemaManager;
 import xivvic.roost.neo.task.NeoTaskInfo;
-import xivvic.roost.service.ServiceLocator;
+import xivvic.roost.service.PersonService;
 
 /**
  * Builds People actions for the application.
@@ -28,7 +34,7 @@ import xivvic.roost.service.ServiceLocator;
 public class ActionBuilderPerson
 	extends ActionBuilderBase
 {
-//	private final static Logger LOG = Logger.getLogger(ActionBuilderPerson.class.getName());
+	private final static Logger LOG = Logger.getLogger(ActionBuilderPerson.class.getName());
 	
 	public ActionBuilderPerson()
 	{
@@ -40,10 +46,32 @@ public class ActionBuilderPerson
 	{
 		String               name = ActionBuilder.PERSON_LIST;
 		final String          desc = "Lists all people.";
-		String              usage = "list";
-		ActionMetadata       meta = new ActionMetadata(name, desc, usage, ServiceLocator.SERVICE_PERSON);
-		InputProcessor  ip = null;
-		Action      action = ActionBuilderBase.buildListAction(meta, ip);
+		Action             action = new ActionBase(name, desc, true)
+		{
+			@Override
+			protected void internal_invoke(Object param)
+			{
+				if (param != null)
+				{
+					String   msg = String.format(name + ": called with param [%s]. Not used.", param);
+					LOG.info(msg);
+				}
+				
+				ProgramComponents components = DaggerProgramComponents.create();
+				PersonService         service = components.personService();
+				if (service == null)
+				{
+					String   msg = String.format(name + ": DI returned null service");
+					LOG.severe(msg);
+					return;
+				}
+
+				Consumer<DomainEntity>   printer = e -> System.out.println(e);
+				System.out.println("People");
+				service.apply(printer);
+			}
+		};
+		
 		return action;
 	}
 	

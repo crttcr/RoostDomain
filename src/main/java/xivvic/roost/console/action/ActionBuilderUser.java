@@ -1,4 +1,4 @@
-package xivvic.roost.console;
+package xivvic.roost.console.action;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,6 +23,10 @@ import xivvic.console.input.InputProcessor;
 import xivvic.console.input.InputProcessorNVPairs;
 import xivvic.neotest.program.RoostRelType;
 import xivvic.roost.app.login.LoginService;
+import xivvic.roost.console.DaggerProgramComponents;
+import xivvic.roost.console.ProgramComponents;
+import xivvic.roost.console.ProgramState;
+import xivvic.roost.domain.DomainEntity;
 import xivvic.roost.domain.Group;
 import xivvic.roost.domain.Person;
 import xivvic.roost.domain.User;
@@ -57,6 +61,7 @@ public class ActionBuilderUser
 {
 	private final static Logger           LOG = Logger.getLogger(ActionBuilderUser.class.getName());
 	private final static RandomString   idgen = new RandomString(16);
+	public static final String PLAINTEXT = "PWD_PLAINTEXT";
 	
 	
 	public ActionBuilderUser()
@@ -68,10 +73,32 @@ public class ActionBuilderUser
 	{
 		String               name = ActionBuilder.USER_LIST;
 		final String          desc = "Lists all users.";
-		String              usage = "list";
-		ActionMetadata       meta = new ActionMetadata(name, desc, usage, ServiceLocator.SERVICE_USER);
-		InputProcessor        aip = InputProcessorNVPairs.DEFAULT;
-		Action             action = ActionBuilderBase.buildListAction(meta, aip);
+		Action             action = new ActionBase(name, desc, true)
+		{
+			@Override
+			protected void internal_invoke(Object param)
+			{
+				if (param != null)
+				{
+					String   msg = String.format(name + ": called with param [%s]. Not used.", param);
+					LOG.info(msg);
+				}
+				
+				ProgramComponents    components = DaggerProgramComponents.create();
+				UserService             service = components.userService();
+				if (service == null)
+				{
+					String   msg = String.format(name + ": DI returned null service");
+					LOG.severe(msg);
+					return;
+				}
+
+				Consumer<DomainEntity>   printer = e -> System.out.println(e);
+				System.out.println("Users");
+				service.apply(printer);
+			}
+		};
+		
 		return action;
 	}
 	
@@ -109,6 +136,10 @@ public class ActionBuilderUser
 		Map<String, Object>   map = new HashMap<>();
 
 		map.put(NeoTaskInfo.NODE_ONE_SCHEMA, schema_user);
+		
+		// FIXME: This ain't right
+		//
+		map.put(PLAINTEXT, "ABC)))DEF");
 
 		populateMapWithEdgeInformation(map);
 
@@ -181,6 +212,8 @@ public class ActionBuilderUser
 			}
 		};
 
+
+		
 		result.put(User.PROP_ID, random_string_generator);
 		result.put(User.PROP_SALT, random_string_generator);
 		
@@ -328,8 +361,9 @@ public class ActionBuilderUser
 				String[] parts = string.split(" +");
 				String  u_name = parts[0];
 				String  secret = parts[1];
+				ProgramComponents components = DaggerProgramComponents.create();
 
-				LoginService login_service = (LoginService) ServiceLocator.locator().get(ServiceLocator.SERVICE_LOGIN);
+				LoginService login_service = components.loginService();
 				String         session_key = login_service.login(u_name, secret);
 				
 				
@@ -339,7 +373,7 @@ public class ActionBuilderUser
 				{
 					ProgramState.setSessionKey(session_key);
 
-					UserService  user_service = (UserService) ServiceLocator.locator().get(ServiceLocator.SERVICE_USER);
+					UserService  user_service = components.userService();
 					User                 user = user_service.findByUserName(u_name);
 					
 					ProgramState.setUser(session_key, user);

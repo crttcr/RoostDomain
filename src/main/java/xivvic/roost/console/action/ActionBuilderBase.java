@@ -1,4 +1,4 @@
-package xivvic.roost.console;
+package xivvic.roost.console.action;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -27,14 +27,12 @@ import xivvic.console.action.ActionMetadata;
 import xivvic.console.input.InputProcessor;
 import xivvic.neotest.program.NeoUtil;
 import xivvic.roost.domain.DomainEntity;
-import xivvic.roost.domain.Person;
 import xivvic.roost.neo.LinkSpec;
 import xivvic.roost.neo.NodeFinder;
 import xivvic.roost.neo.NodeFinderFull;
 import xivvic.roost.neo.PropMeta;
 import xivvic.roost.neo.task.NeoTaskInfo;
 import xivvic.roost.service.DomainEntityContainer;
-import xivvic.roost.service.GroupService;
 import xivvic.roost.service.ServiceLocator;
 import xivvic.util.identity.RandomString;
 import xivvic.util.text.StringUtil;
@@ -309,41 +307,6 @@ public abstract class ActionBuilderBase
 		return action;
 	}
 
-	static Action buildListGroupMembersAction(ActionMetadata meta, InputProcessor aip)
-	{
-		Action action = new ActionBase(meta.name(), meta.desc(), true)
-		{
-			@Override
-			protected void internal_invoke(Object param)
-			{
-				String           params = (String) param;
-				Map<String, Object> map = aip.process(params);
-				if (map == null)
-				{
-					String   msg = String.format("Error\nUsage: \n%s", meta.usage());
-					System.err.println(msg);
-					return;
-				}
-				
-				GroupService  svc = (GroupService) ServiceLocator.locator().get(meta.service());
-				if (svc == null)
-				{
-					String   msg = String.format(meta.name() + ": Could not locate service [%s]. Abort.", meta.service());
-					LOG.severe(msg);
-					return;
-				}
-				
-				String gid = (String) map.get("group_id");
-				List<Person> list = svc.listMembers(gid);
-
-				Consumer<Person>   printer = p -> System.out.println(p);
-				System.out.println(meta.name() + "s:");
-				list.forEach(printer);
-			}
-		};
-		
-		return action;
-	}
 	
 	final static Action buildActionForDeleteCommand(ActionMetadata meta, InputProcessor aip)
 	{
