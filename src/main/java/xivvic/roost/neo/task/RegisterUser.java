@@ -25,8 +25,8 @@ import xivvic.roost.neo.NodeSchema;
 import xivvic.roost.neo.PropMeta;
 import xivvic.roost.neo.PropPredicate;
 import xivvic.roost.neo.SchemaManager;
-import xivvic.util.PasswordUtil;
 import xivvic.util.identity.RandomString;
+import xivvic.util.password.PasswordUtil;
 
 /*
  * Single command handler that performs multiple commands within a single transaction.

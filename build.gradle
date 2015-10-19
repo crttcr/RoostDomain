@@ -15,6 +15,7 @@ repositories
 
 configurations
 {
+//	apt
 	capsule
 }
 
@@ -23,6 +24,7 @@ configurations
 dependencies 
 {
 //  annotationProcessor 'com.google.auto.value:auto-value:1.1'
+//  apt 'com.google.dagger:dagger-compiler:2.0.1'
 
 	capsule 'co.paralleluniverse:capsule:1.0.1'
 
@@ -31,8 +33,16 @@ dependencies
 	compile project(':Messaging')
    compile 'com.google.auto.value:auto-value:1.1'
  	compile 'com.google.dagger:dagger:2.0.1'
+ 	compile 'com.google.dagger:dagger-compiler:2.0.1'
 	compile 'org.neo4j:neo4j:2.2.5'
    compile 'org.slf4j:slf4j-api:1.7.7'
+
+// Keep this in sync with version from dropwizard
+//
+	compile 'com.fasterxml.jackson.core:jackson-annotations:2.5.1'
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
+
+
 
 	testCompile group: 'org.neo4j', name: 'neo4j-kernel', version: '2.2.5', classifier: 'tests'
 	testCompile group: 'org.neo4j', name: 'neo4j-io', version: '2.2.5', classifier: 'tests'

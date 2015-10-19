@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import xivvic.roost.dao.UserDao;
 import xivvic.roost.domain.User;
-import xivvic.util.PasswordUtil;
+import xivvic.util.password.PasswordUtil;
 
 public class LoginService
 {

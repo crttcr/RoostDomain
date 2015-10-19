@@ -29,8 +29,8 @@ import xivvic.roost.neo.PropMeta;
 import xivvic.roost.neo.SchemaManager;
 import xivvic.roost.neo.task.NeoTaskInfo;
 import xivvic.roost.service.EventService;
-import xivvic.util.TimeUtil;
 import xivvic.util.identity.RandomString;
+import xivvic.util.time.TimeUtil;
 
 /**
  * Builds Event actions for the application.
