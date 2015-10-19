@@ -5,10 +5,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.auto.value.AutoValue;
 
 import xivvic.roost.Nullable;
-import xivvic.util.ByteUtil;
+import xivvic.util.hex.HexUtil;
 
 /**
  *  
@@ -17,11 +20,15 @@ import xivvic.util.ByteUtil;
  */
 
 @AutoValue
+@JsonDeserialize(builder=AutoValue_Address.Builder.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Address 
 	implements DomainEntity
 {
 	public static final List<Address> EMPTY_LIST = Collections.<Address>emptyList();
 	
+	// TODO:  These properties should come from the domain model
+	//
 	public static final String PROP_ID          = "address_id";
 	public static final String PROP_LINE_ONE    = "address_line_one";
 	public static final String PROP_LINE_TWO    = "address_line_two";
@@ -33,6 +40,7 @@ public abstract class Address
 	 * 
 	 * @return
 	 */
+	@JsonProperty("id")
 	public abstract String id();
 	
 	public final String digest()
@@ -44,6 +52,7 @@ public abstract class Address
 	 * The first line of the address
 	 * @return text of the first line
 	 */
+	@JsonProperty("lineOne")
 	public abstract String lineOne();
 	
 	/**
@@ -51,6 +60,7 @@ public abstract class Address
 	 * @return text of the second line
 	 */
 	@Nullable
+	@JsonProperty("lineTwo")
 	public abstract String lineTwo();
 	
 	/**
@@ -58,6 +68,7 @@ public abstract class Address
 	 * 
 	 * @return the city
 	 */
+	@JsonProperty("city")
 	public abstract String city();
 	
 	/**
@@ -65,20 +76,34 @@ public abstract class Address
 	 * 
 	 * @return the state
 	 */
+	@JsonProperty("state")
 	public abstract String state();
 	
 	@Nullable
+	@JsonProperty("zip")
 	public abstract String zip();
 
 	@AutoValue.Builder
 	public abstract static class Builder
 	{
+		@JsonProperty("id")
 		public abstract Builder id(String id);
+
+		@JsonProperty("lineOne")
 		public abstract Builder lineOne(String lineOne);
+		
+		@JsonProperty("lineTwo")
 		public abstract Builder lineTwo(String lineTwo);
+		
+		@JsonProperty("city")
 		public abstract Builder city(String city);
+		
+		@JsonProperty("state")
 		public abstract Builder state(String state);
+		
+		@JsonProperty("zip")
 		public abstract Builder zip(String zip);
+		
 		public abstract Address build();
 	}
 	
@@ -124,7 +149,7 @@ public abstract class Address
 		md.update(zi.trim().toLowerCase().getBytes());
 
 		byte[] bytes  = md.digest();
-		String digest = ByteUtil.bytesToHex(bytes);
+		String digest = HexUtil.bytesToHex(bytes);
 		
 		return digest;
 	}

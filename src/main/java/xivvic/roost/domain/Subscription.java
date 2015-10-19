@@ -3,6 +3,9 @@ package xivvic.roost.domain;
 import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.auto.value.AutoValue;
 
 /**
@@ -13,6 +16,8 @@ import com.google.auto.value.AutoValue;
  */
 	
 @AutoValue
+@JsonDeserialize(builder=AutoValue_Subscription.Builder.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Subscription 
 	implements DomainEntity
 {
@@ -25,16 +30,22 @@ public abstract class Subscription
 	 * 
 	 * @return
 	 */
+	@JsonProperty("id")
 	public abstract String id();
 	
+	@JsonProperty("expiry")
 	public abstract SubscriptionExpiry expiry();
 
 	@AutoValue.Builder
 	public abstract static class Builder
 	{
-		public abstract Subscription build();
+		@JsonProperty("id")
 		public abstract Builder id(String id);
+
+		@JsonProperty("expiry")
 		public abstract Builder expiry(SubscriptionExpiry expiry);
+
+		public abstract Subscription build();
 	}
 	
 	public static Builder builder()

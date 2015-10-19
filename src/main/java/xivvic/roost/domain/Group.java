@@ -3,6 +3,9 @@ package xivvic.roost.domain;
 import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.auto.value.AutoValue;
 /**
  * Immutable value type representing a group of individuals
@@ -12,6 +15,8 @@ import com.google.auto.value.AutoValue;
  */
 
 @AutoValue
+@JsonDeserialize(builder=AutoValue_Group.Builder.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Group 
 	implements DomainEntity
 {
@@ -23,6 +28,7 @@ public abstract class Group
 	 * 
 	 * @return the group's id
 	 */
+	@JsonProperty("id")
 	public abstract String id();
 	
 	/**
@@ -30,14 +36,19 @@ public abstract class Group
 	 * 
 	 * @return the group's name
 	 */
+	@JsonProperty("name")
 	public abstract String name();
 	
 	@AutoValue.Builder
 	public abstract static class Builder
 	{
-		public abstract Group   build();
+		@JsonProperty("id")
 		public abstract Builder id(String id);
+
+		@JsonProperty("name")
 		public abstract Builder name(String name);
+
+		public abstract Group   build();
 	}
 	
 	public static Builder builder()

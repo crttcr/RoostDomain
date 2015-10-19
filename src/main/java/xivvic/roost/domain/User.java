@@ -3,6 +3,9 @@ package xivvic.roost.domain;
 import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.auto.value.AutoValue;
 
 /**
@@ -15,6 +18,8 @@ import com.google.auto.value.AutoValue;
  */
 
 @AutoValue
+@JsonDeserialize(builder=AutoValue_User.Builder.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class User 
 	implements DomainEntity
 {
@@ -28,6 +33,7 @@ public abstract class User
 	 * Unique id for this user
 	 * 
 	 */
+	@JsonProperty("id")
 	public abstract String id();
 
 	/**
@@ -36,6 +42,7 @@ public abstract class User
 	 * 
 	 * @return user name for this user
 	 */
+	@JsonProperty("username")
 	public abstract String username();
 
 	/**
@@ -43,6 +50,7 @@ public abstract class User
 	 * 
 	 * @return the email address
 	 */
+	@JsonProperty("email")
 	public abstract String email();
 
 	/**
@@ -50,6 +58,7 @@ public abstract class User
 	 * 
 	 * @return the hashed value of the user's password
 	 */
+	@JsonProperty("passhash")
 	public abstract String passhash();
 	
 	/**
@@ -57,6 +66,7 @@ public abstract class User
 	 * 
 	 * @return the user's group object
 	 */
+	@JsonProperty("group")
 	public abstract Group group();
 	
 	/**
@@ -64,18 +74,31 @@ public abstract class User
 	 * 
 	 * @return the user's Person object
 	 */
+	@JsonProperty("person")
 	public abstract Person person();
 	
 	@AutoValue.Builder
 	public abstract static class Builder
 	{
-		public abstract User build();
+		@JsonProperty("id")
 		public abstract Builder id(String id);
+
+		@JsonProperty("username")
 		public abstract Builder username(String username);
+
+		@JsonProperty("email")
 		public abstract Builder email(String email);
+
+		@JsonProperty("passhash")
 		public abstract Builder passhash(String passhash);
+
+		@JsonProperty("group")
 		public abstract Builder group(Group group);
+
+		@JsonProperty("person")
 		public abstract Builder person(Person person);
+
+		public abstract User build();
 	}
 	
 	public static Builder builder()
