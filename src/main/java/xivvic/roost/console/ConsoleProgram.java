@@ -6,6 +6,8 @@ import java.io.PrintStream;
 import java.util.Map;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import console.menu.BatchAction;
 import console.menu.MenuManager;
@@ -33,6 +35,7 @@ import xivvic.roost.service.ServiceLocator;
 
 public class ConsoleProgram
 {
+   private static final Logger logger = LoggerFactory.getLogger(ConsoleProgram.class.getName());
 	/**
 	 * This controls where all menu and action output will go.
 	 */
@@ -41,11 +44,13 @@ public class ConsoleProgram
 
 	public ConsoleProgram()
 	{
+		logger.debug("Constructing program object");
 	}
 
 	
 	public static void main(String[] args)
 	{
+		logger.debug("Starting main() function");
 		ConsoleProgram   consoleProgram = new ConsoleProgram();
 		Action       init = consoleProgram.buildInit();
 		BatchAction batch = consoleProgram.buildBatch();

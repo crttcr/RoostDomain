@@ -28,7 +28,7 @@ extends NeoCommandHandler
 		if (schema == null)
 		{
 			String msg = String.format("Cannout create Node without schema: [%s]", NeoTaskInfo.NODE_ONE_SCHEMA);
-			LOG.warning(msg);
+			LOG.warn(msg);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
 		}
@@ -42,7 +42,7 @@ extends NeoCommandHandler
 				String           msg = String.format("Failed to create node of type [%s]", type);
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
 				tx.success();
-				LOG.warning(msg);
+				LOG.warn(msg);
 				return result;
 			}
 

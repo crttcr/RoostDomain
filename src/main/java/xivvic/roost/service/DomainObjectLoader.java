@@ -1,7 +1,9 @@
 package xivvic.roost.service;
 
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.roost.dao.ValueObjectBuilder;
 import xivvic.roost.domain.Address;
@@ -15,7 +17,7 @@ import xivvic.roost.domain.resolver.ValueProvider;
 
 public class DomainObjectLoader
 {
-	private final static Logger LOG = Logger.getLogger(DomainObjectLoader.class.getName()); 
+	private final static Logger LOG = LoggerFactory.getLogger(DomainObjectLoader.class.getName()); 
 
 	public DomainObjectLoader()
 	{
@@ -27,14 +29,14 @@ public class DomainObjectLoader
 		loadEvents();
 		int count = loadGroups();
 		
-		LOG.fine("Loaded " + count + " groups.");
+		LOG.info("Loaded " + count + " groups.");
 		
 		loadAddresses();
 	}
 
 	public void loadAddresses()
 	{
-		LOG.fine("Loading physical address data");
+		LOG.info("Loading physical address data");
 		
 		String              addressData = loadAddressData();
 		ValueProvider   addressProvider = new TabSeparatedStringValueProvider(addressData);
@@ -49,7 +51,7 @@ public class DomainObjectLoader
 
 	public void loadPeople()
 	{
-		LOG.fine("Loading person data");
+		LOG.info("Loading person data");
 		
 		String            peopleData = loadPeopleData();
 		ValueProvider peopleProvider = new TabSeparatedStringValueProvider(peopleData);
@@ -64,7 +66,7 @@ public class DomainObjectLoader
 
 	public void loadEvents()
 	{
-		LOG.fine("Loading event data");
+		LOG.info("Loading event data");
 		
 		String             eventData = loadEventData();
 		ValueProvider  eventProvider = new TabSeparatedStringValueProvider(eventData);
@@ -79,7 +81,7 @@ public class DomainObjectLoader
 
 	public int loadGroups()
 	{
-		LOG.fine("Loading group data");
+		LOG.info("Loading group data");
 		
 		String                groupData = loadGroupData();
 		ValueProvider     groupProvider = new TabSeparatedStringValueProvider(groupData);

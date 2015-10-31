@@ -3,13 +3,14 @@ package xivvic.roost.neo.task;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.ConstraintViolationException;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.graphdb.Relationship;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.command.Command;
 import xivvic.command.CommandHandler;
@@ -20,7 +21,7 @@ import xivvic.roost.neo.PropMeta;
 public abstract class NeoCommandHandler
 implements CommandHandler
 {
-	protected final static Logger       LOG = Logger.getLogger(NeoCommandHandler.class.getName());
+	protected final static Logger       LOG = LoggerFactory.getLogger(NeoCommandHandler.class.getName());
 	protected final GraphDatabaseService db;
 	protected final Command             cmd;
 
@@ -138,7 +139,7 @@ implements CommandHandler
 		{
 			String           fmt = "FAIL: Set property on (:%s) -- property=[%s], value=[%s]. Exception: [%s]";
 			String           msg = String.format(fmt, target, key, value, e.getLocalizedMessage());
-			LOG.warning(msg);
+			LOG.warn(msg);
 			return msg;
 		}
 		

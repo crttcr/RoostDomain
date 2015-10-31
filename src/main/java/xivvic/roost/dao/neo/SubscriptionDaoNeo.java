@@ -3,7 +3,6 @@ package xivvic.roost.dao.neo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
@@ -11,6 +10,8 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.neotest.program.RoostNodeType;
 import xivvic.neotest.program.RoostRelType;
@@ -24,7 +25,7 @@ public class SubscriptionDaoNeo
 	extends DaoNeo
 	implements SubscriptionDao
 {
-	private final static Logger LOG = Logger.getLogger(SubscriptionDaoNeo.class.getName()); 
+	private final static Logger LOG = LoggerFactory.getLogger(SubscriptionDaoNeo.class.getName()); 
 	
 	public SubscriptionDaoNeo(GraphDatabaseService gdb)
 	{
@@ -50,7 +51,7 @@ public class SubscriptionDaoNeo
 			if (user_node == null)
 			{
 				String msg = String.format("Unable to locate person with id = [%s]", user_id);
-				LOG.warning(msg);
+				LOG.warn(msg);
 				tx.success();
 				return Subscription.EMPTY_LIST;
 			}
@@ -154,7 +155,7 @@ public class SubscriptionDaoNeo
 			if (event_node == null)
 			{
 				String msg = String.format("Unable to locate event with id = [%s]", event_id);
-				LOG.warning(msg);
+				LOG.warn(msg);
 				tx.success();
 				return Subscription.EMPTY_LIST;
 			}

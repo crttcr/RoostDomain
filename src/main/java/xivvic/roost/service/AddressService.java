@@ -2,7 +2,9 @@ package xivvic.roost.service;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.roost.dao.AddressDao;
 import xivvic.roost.domain.Address;
@@ -11,12 +13,12 @@ import xivvic.roost.domain.DomainEntity;
 public class AddressService
 	implements DomainEntityContainer
 {	
-	private final static Logger LOG = Logger.getLogger(AddressService.class.getName()); 
+	private final static Logger LOG = LoggerFactory.getLogger(AddressService.class.getName()); 
 	private final AddressDao dao;
 	
 	public AddressService(AddressDao dao)
 	{
-		LOG.fine(this.getClass().getSimpleName() + ": Created.");
+		LOG.info(this.getClass().getSimpleName() + ": Created.");
 		this.dao = dao;
 	}
 	

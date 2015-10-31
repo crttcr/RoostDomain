@@ -5,7 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
@@ -34,7 +36,7 @@ import xivvic.roost.service.PersonService;
 public class ActionBuilderPerson
 	extends ActionBuilderBase
 {
-	private final static Logger LOG = Logger.getLogger(ActionBuilderPerson.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(ActionBuilderPerson.class.getName());
 	
 	public ActionBuilderPerson()
 	{
@@ -62,7 +64,7 @@ public class ActionBuilderPerson
 				if (service == null)
 				{
 					String   msg = String.format(name + ": DI returned null service");
-					LOG.severe(msg);
+					LOG.error(msg);
 					return;
 				}
 

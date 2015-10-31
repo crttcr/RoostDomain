@@ -2,7 +2,9 @@ package xivvic.roost.console;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.command.Command;
 import xivvic.command.ResultProcessor;
@@ -43,7 +45,7 @@ import xivvic.util.identity.RandomString;
 public class CommandResultPublisher
 	implements ResultProcessor
 {
-	private final static Logger LOG = Logger.getLogger(CommandResultPublisher.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(CommandResultPublisher.class.getName());
 	
 	private final EventBroker broker;
 	private Command cmd;
@@ -62,7 +64,7 @@ public class CommandResultPublisher
 		if (cmd == null)
 		{
 			String msg = "Publisher's run() method called but Command is null. Abort.";
-			LOG.warning(msg);
+			LOG.warn(msg);
 			return;
 		}
 		

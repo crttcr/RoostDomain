@@ -31,7 +31,7 @@ public class NodeDelete
 		if (finder == null)
 		{
 			String msg = String.format("Cannout delete Node with null label");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
 		}
@@ -42,7 +42,7 @@ public class NodeDelete
 		if (value == null)
 		{
 			String msg = String.format("Cannout delete Node with null value");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
 		}
@@ -56,7 +56,7 @@ public class NodeDelete
 				String           msg = String.format("Failed to locate node of type %s with [%s] -> [%s]", label, key, value);
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
 				tx.success();
-				LOG.warning(msg);
+				LOG.warn(msg);
 				return result;
 			}
 

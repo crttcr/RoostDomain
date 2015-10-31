@@ -24,6 +24,7 @@ public abstract class User
 	implements DomainEntity
 {
 	public static final List<User> EMPTY_LIST =  Collections.<User>emptyList();
+
 	public static final String    PROP_ID = "user_id";
 	public static final String PROP_EMAIL = "user_email";
 	public static final String PROP_UNAME = "user_username";

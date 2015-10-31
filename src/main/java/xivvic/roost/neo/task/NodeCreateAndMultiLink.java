@@ -36,7 +36,7 @@ extends NeoCommandHandler
 		if (schema == null)
 		{
 			String msg = String.format("Schema for the creating a node was not available from processed parameters.");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			cmd.setStatus(CommandStatus.FAILED);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
@@ -47,7 +47,7 @@ extends NeoCommandHandler
 		if (link_map == null)
 		{
 			String msg = String.format("Map of link specifications is required to create a user");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			cmd.setStatus(CommandStatus.FAILED);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
@@ -64,7 +64,7 @@ extends NeoCommandHandler
 				String           msg = String.format("Failed to create node of type %s", schema.type());
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
 				tx.failure();
-				LOG.warning(msg);
+				LOG.warn(msg);
 				return result;
 			}
 			
@@ -104,7 +104,7 @@ extends NeoCommandHandler
 					String           msg = String.format(fmt,  label, prop, value);
 					CommandResult result = CommandResult.failure(cmd.id(), msg);
 					tx.failure();
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return result;
 				}
 			}
@@ -130,7 +130,7 @@ extends NeoCommandHandler
 		if (! finder.isValid())
 		{
 			error_message = String.format("Cannout link [:%s] to Node with label with invalid finder", r_type);
-			LOG.warning(error_message);
+			LOG.warn(error_message);
 			return null;
 		}
 	
@@ -139,7 +139,7 @@ extends NeoCommandHandler
 		{
 			String fmt = "Node(:%s) with %s=%s not found. Cannot link. Abort.";
 			String msg = String.format(fmt, other_node_label, other_node_key, other_node_value);
-			LOG.warning(msg);
+			LOG.warn(msg);
 			return null;
 		}
 		

@@ -5,11 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
@@ -32,7 +33,7 @@ import xivvic.util.text.StringUtil;
 public class ActionBuilderConfiguration
 	extends ActionBuilderBase
 {
-	private final static Logger LOG = Logger.getLogger(ActionBuilderConfiguration.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(ActionBuilderConfiguration.class.getName());
 	
 	public ActionBuilderConfiguration()
 	{
@@ -53,12 +54,12 @@ public class ActionBuilderConfiguration
 				if (b)
 				{
 					String msg = "TRACE disabled";
-					LOG.fine(msg);
+					LOG.info(msg);
 				}
 				else
 				{
 					String msg = "TRACE disabled";
-					LOG.fine(msg);
+					LOG.info(msg);
 				}
 				
 				ProgramState.setTraceEnabled(! b);

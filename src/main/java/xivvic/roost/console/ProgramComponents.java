@@ -2,6 +2,8 @@ package xivvic.roost.console;
 
 import javax.inject.Singleton;
 
+import org.neo4j.graphdb.GraphDatabaseService;
+
 import dagger.Component;
 import xivvic.neotest.program.Neo4jDatabaseModule;
 import xivvic.neotest.program.NeoDaoModule;
@@ -25,5 +27,6 @@ public interface ProgramComponents
 	SubscriptionService  subscriptionService();
 	UserService                  userService();
 	LoginService                loginService();
+	GraphDatabaseService     databaseService();
 
 }

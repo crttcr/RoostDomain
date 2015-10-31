@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.roost.domain.Address;
 import xivvic.roost.domain.Event;
@@ -23,15 +25,14 @@ public class ValueObjectBuilder
 	public static final String RECORD_SEPARATOR = "\n";
 	public static final String FIELD_SEPARATOR = "\t";
 
-	private final static Logger LOG = Logger.getLogger(ValueObjectBuilder.class.getName()); 
-	private final static DateTimeFormatter DATE_FORMAT     = DateTimeFormatter.ISO_DATE;
-	private final static DateTimeFormatter TIME_FORMAT     = DateTimeFormatter.ISO_TIME;
+	private final static Logger                        LOG = LoggerFactory.getLogger(ValueObjectBuilder.class.getName()); 
+	private final static DateTimeFormatter     DATE_FORMAT = DateTimeFormatter.ISO_DATE;
+	private final static DateTimeFormatter     TIME_FORMAT = DateTimeFormatter.ISO_TIME;
 	
 	public ValueObjectBuilder()
 	{
 		// this.entityResolver = er;
 	}
-	
 	
 // This was an attempt to build a function table mapping
 // Builder's field names to an object that would call the appropriate
@@ -134,12 +135,12 @@ public class ValueObjectBuilder
      	if (ok)
      	{
      		String msg = String.format("%s -> %s", field, value);
-     		LOG.fine(msg);
+     		LOG.info(msg);
      	}
      	else
      	{
      		String msg = String.format("FAIL (reflective call): field -> %s, value -> %s", field, value);
-     		LOG.fine(msg);
+     		LOG.info(msg);
      	}
 	}
 
@@ -268,7 +269,7 @@ public class ValueObjectBuilder
      	else
      	{
      		String msg = String.format("Unable to obtain event type.  Cannot create event");
-     		LOG.warning(msg);
+     		LOG.warn(msg);
      		return null;
      	}
      	
@@ -278,7 +279,7 @@ public class ValueObjectBuilder
      	if (e == null)
      	{
      		String msg = String.format("Unable to obtain temporal coordinate.  Cannot create event");
-     		LOG.warning(msg);
+     		LOG.warn(msg);
      		return null;
      	}
 
@@ -362,7 +363,7 @@ public class ValueObjectBuilder
 //      		else
 //      		{
 //      			String msg = "Unable to resolve person identified by: " + person_id + ".  No addition to Group [" + name + "] members";
-//      			LOG.warning(msg);
+//      			LOG.warn(msg);
 //      		}
 //      	}
 //      		

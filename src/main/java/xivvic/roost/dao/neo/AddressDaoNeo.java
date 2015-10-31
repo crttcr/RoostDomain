@@ -2,13 +2,14 @@ package xivvic.roost.dao.neo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.neotest.program.RoostNodeType;
 import xivvic.roost.dao.AddressDao;
@@ -19,7 +20,7 @@ public class AddressDaoNeo
 	extends DaoNeo
 	implements AddressDao
 {
-	private final static Logger LOG = Logger.getLogger(AddressService.class.getName()); 
+	private final static Logger LOG = LoggerFactory.getLogger(AddressService.class.getName()); 
 
 	public AddressDaoNeo(GraphDatabaseService gdb)
 	{
@@ -36,7 +37,7 @@ public class AddressDaoNeo
 		if (id == null)
 		{
 			String msg = "Id parameter was null.  Abort.";
-			LOG.warning(msg);
+			LOG.warn(msg);
 			return null;
 		}
 		
@@ -125,7 +126,7 @@ public class AddressDaoNeo
 			if (! id.equals(hydrated_id))
 			{
 				String msg = String.format("Address ID mismatch. Hydrated [%s], computed [%s]", hydrated_id, id);
-				LOG.warning(msg);
+				LOG.warn(msg);
 			}
 			tx.success();
 			return addr;

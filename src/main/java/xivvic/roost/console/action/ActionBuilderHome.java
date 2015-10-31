@@ -2,7 +2,9 @@ package xivvic.roost.console.action;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
@@ -32,7 +34,7 @@ import xivvic.roost.service.UserService;
 public class ActionBuilderHome
 	extends ActionBuilderBase
 {
-	private final static Logger LOG = Logger.getLogger(ActionBuilderHome.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(ActionBuilderHome.class.getName());
 	
 	public ActionBuilderHome()
 	{
@@ -53,7 +55,7 @@ public class ActionBuilderHome
 				if (session_key == null)
 				{
 					String msg = "No user is logged on.  Nothing to display.";
-					LOG.warning(msg);
+					LOG.warn(msg);
 					System.out.println("No user is logged on.  Nothing to display.");
 					return;
 				}
@@ -62,7 +64,7 @@ public class ActionBuilderHome
 				if (user == null)
 				{
 					String msg = "Failed to acquire user object from program state. Abort.";
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 

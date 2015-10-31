@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.roost.domain.Address;
 import xivvic.roost.domain.ContactInformation;
@@ -20,7 +22,7 @@ import xivvic.roost.domain.Subscription;
 public class ObjectRepositoryBase
 	implements ObjectRepository
 {
-	private final static Logger LOG = Logger.getLogger(ObjectRepositoryBase.class.getName()); 
+	private final static Logger LOG = LoggerFactory.getLogger(ObjectRepositoryBase.class.getName()); 
 
 	ConcurrentMap<String, Object>           objects = new ConcurrentHashMap<>();
 	ConcurrentMap<Class<?>, Set<Object>> class_sets = new ConcurrentHashMap<>();
@@ -91,7 +93,7 @@ public class ObjectRepositoryBase
 		if (o instanceof Address            ) return             Address.class;
 		if (o instanceof ContactInformation ) return  ContactInformation.class;
 
-		LOG.severe("No effective class mapping for object of type: " + o.getClass().toString());
+		LOG.error("No effective class mapping for object of type: " + o.getClass().toString());
 		return Object.class;
 	}
 

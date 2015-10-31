@@ -29,7 +29,7 @@ extends NeoCommandHandler
 		if (finder == null)
 		{
 			String msg = String.format("Cannout modify Node with null locator");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
 		}
@@ -41,7 +41,7 @@ extends NeoCommandHandler
 		if (value == null)
 		{
 			String msg = String.format("Cannout modify Node with null value for property [%s]", key);
-			LOG.warning(msg);
+			LOG.warn(msg);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
 		}
@@ -54,7 +54,7 @@ extends NeoCommandHandler
 				String           msg = String.format("Failed to find node of type %s with property %s=%s", label, key, value);
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
 				tx.success();
-				LOG.warning(msg);
+				LOG.warn(msg);
 				return result;
 			}
 

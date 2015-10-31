@@ -2,7 +2,6 @@ package xivvic.roost.neo.task;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
@@ -10,6 +9,8 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.command.Command;
 import xivvic.command.CommandHandler;
@@ -20,7 +21,7 @@ import xivvic.roost.neo.NodeFinder;
 public class Unlink
 implements CommandHandler
 {
-	private final static Logger       LOG = Logger.getLogger(Unlink.class.getName());
+	private final static Logger       LOG = LoggerFactory.getLogger(Unlink.class.getName());
 	private final GraphDatabaseService db;
 	private final Command             cmd;
 
@@ -119,7 +120,7 @@ implements CommandHandler
 		String         right = key_two + ":" + value_two;
 		String           msg = String.format("Unable to find relationship for (%s) -- [:%s] -- (%s).", left, r_type, right);
 		CommandResult result = CommandResult.failure(cmd.id(), msg);
-		LOG.warning(msg);
+		LOG.warn(msg);
 		return result;
 	}
 }

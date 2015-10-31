@@ -1,9 +1,10 @@
 package xivvic.roost.neo.task;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.command.Command;
 import xivvic.command.CommandHandler;
@@ -12,7 +13,7 @@ import xivvic.command.CommandHandlerFactory;
 public class NeoCommandHandlerFactory
 		implements CommandHandlerFactory
 {
-	private final static Logger LOG = Logger.getLogger(NeoCommandHandlerFactory.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(NeoCommandHandlerFactory.class.getName());
 	
 	// Factory Instance Variables
 	//
@@ -39,7 +40,7 @@ public class NeoCommandHandlerFactory
 		if (h == null)
 		{
 			String msg = String.format("Failed to find a handler for intent [%s]", intent);
-			LOG.severe(msg);
+			LOG.error(msg);
 			return null;
 		}
 		
@@ -74,7 +75,7 @@ public class NeoCommandHandlerFactory
 			break;
 		default:
 			String msg = String.format("Failed to find a case stantement for value: %s", h);
-			LOG.warning(msg);
+			LOG.warn(msg);
 		};
 		
 		return ch;

@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
@@ -14,6 +13,8 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.neotest.program.RoostNodeType;
 import xivvic.neotest.program.RoostRelType;
@@ -26,7 +27,7 @@ public class EventDaoNeo
 	extends DaoNeo
 	implements EventDao
 {
-	private final static Logger LOG = Logger.getLogger(EventDaoNeo.class.getName()); 
+	private final static Logger LOG = LoggerFactory.getLogger(EventDaoNeo.class.getName()); 
 	
 	public EventDaoNeo(GraphDatabaseService gdb)
 	{
@@ -67,7 +68,7 @@ public class EventDaoNeo
 			if (p_node == null)
 			{
 				String msg = String.format("Unable to locate person with id = [%s]", pid);
-				LOG.warning(msg);
+				LOG.warn(msg);
 				tx.success();
 				return Event.EMPTY_LIST;
 			}

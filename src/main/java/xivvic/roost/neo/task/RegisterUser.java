@@ -2,13 +2,14 @@ package xivvic.roost.neo.task;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.command.Command;
 import xivvic.command.CommandHandler;
@@ -43,7 +44,7 @@ public class RegisterUser
 	extends NeoCommandHandler
 	implements CommandHandler
 {
-	private final static Logger          LOG = Logger.getLogger(RegisterUser.class.getName());
+	private final static Logger          LOG = LoggerFactory.getLogger(RegisterUser.class.getName());
 	private final DomainSchema schemaManager = SchemaManager.getInstance();
 
 	public RegisterUser(GraphDatabaseService db, Command command)
@@ -76,7 +77,7 @@ public class RegisterUser
 		if (u_schema == null)
 		{
 			String msg = String.format("Schema for the creating a user node was not available");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			cmd.setStatus(CommandStatus.FAILED);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
@@ -87,7 +88,7 @@ public class RegisterUser
 		if (edge_map == null)
 		{
 			String msg = String.format("Map of link specifications is required to create a user");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			cmd.setStatus(CommandStatus.FAILED);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
@@ -99,7 +100,7 @@ public class RegisterUser
 		if (g_edge == null)
 		{
 			String msg = String.format("Information for establishing group->user relationship is missing.");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			cmd.setStatus(CommandStatus.FAILED);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
@@ -108,7 +109,7 @@ public class RegisterUser
 		if (p_edge == null)
 		{
 			String msg = String.format("Information for establishing user->person relationship is missing.");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			cmd.setStatus(CommandStatus.FAILED);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
@@ -131,7 +132,7 @@ public class RegisterUser
 			{
 				String fmt = "RegisterUser: Failed to find group: [%s] -> [%s]";
 				String msg = String.format(fmt, g_finder.prop().name(), g_finder.value());
-				LOG.warning(msg);
+				LOG.warn(msg);
 				tx.success();
 				cmd.setStatus(CommandStatus.FAILED);
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
@@ -146,7 +147,7 @@ public class RegisterUser
 			{
 				String fmt = "RegisterUser: Failed to find person: [%s] -> [%s]";
 				String msg = String.format(fmt, p_finder.prop().name(), p_finder.value());
-				LOG.warning(msg);
+				LOG.warn(msg);
 				tx.success();
 				cmd.setStatus(CommandStatus.FAILED);
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
@@ -177,7 +178,7 @@ public class RegisterUser
 				if (existing != null)
 				{
 					String msg = String.format("User with property [%s] -> [%s] already exists. This property must be unique.", key, value);
-					LOG.warning(msg);
+					LOG.warn(msg);
 					tx.success();
 					cmd.setStatus(CommandStatus.FAILED);
 					CommandResult result = CommandResult.failure(cmd.id(), msg);
@@ -224,7 +225,7 @@ public class RegisterUser
 			if (u2g == null)
 			{
 				String msg = String.format("Failed to link user[%s] with group [%s]", node, g_node);
-				LOG.warning(msg);
+				LOG.warn(msg);
 				tx.success();
 				cmd.setStatus(CommandStatus.FAILED);
 				node.delete();
@@ -236,7 +237,7 @@ public class RegisterUser
 			if (u2p == null)
 			{
 				String msg = String.format("Failed to link user[%s] with person [%s]", node, p_node);
-				LOG.warning(msg);
+				LOG.warn(msg);
 				tx.success();
 				cmd.setStatus(CommandStatus.FAILED);
 				node.delete();

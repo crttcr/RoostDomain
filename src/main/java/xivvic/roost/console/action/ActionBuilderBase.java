@@ -10,11 +10,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.command.Command;
 import xivvic.command.CommandBase;
@@ -25,7 +26,8 @@ import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
 import xivvic.console.action.ActionMetadata;
 import xivvic.console.input.InputProcessor;
-import xivvic.neotest.program.NeoUtil;
+import xivvic.roost.console.DaggerProgramComponents;
+import xivvic.roost.console.ProgramComponents;
 import xivvic.roost.domain.DomainEntity;
 import xivvic.roost.neo.LinkSpec;
 import xivvic.roost.neo.NodeFinder;
@@ -46,7 +48,7 @@ import xivvic.util.text.StringUtil;
 public abstract class ActionBuilderBase
 	implements ActionBuilder
 {
-	private final static Logger LOG = Logger.getLogger(ActionBuilderBase.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(ActionBuilderBase.class.getName());
 	
 	private static final Set<ActionBuilder> subclasses = new HashSet<>();
 	private static final RandomString            idgen = new RandomString(16);
@@ -80,7 +82,7 @@ public abstract class ActionBuilderBase
 		if (completedBuilding)
 		{
 			String msg = String.format("Actions have already been built. Return with no action.");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			return;
 		}
 		
@@ -194,7 +196,7 @@ public abstract class ActionBuilderBase
 				if (cp == null)
 				{
 					String msg = String.format("Unable to retrieve command processor from ServiceLocator");
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				
@@ -222,7 +224,7 @@ public abstract class ActionBuilderBase
 				else
 				{
 					String msg = String.format("Command rejected: [%s]", status);
-					LOG.warning(msg);
+					LOG.warn(msg);
 				}
 			}
 		};
@@ -261,7 +263,7 @@ public abstract class ActionBuilderBase
 			if (value == null)
 			{
 				String   msg = String.format("Property for key [%s] not available.", key);
-				LOG.warning(msg);
+				LOG.warn(msg);
 				return;
 			}
 
@@ -287,14 +289,14 @@ public abstract class ActionBuilderBase
 				if (param != null)
 				{
 					String   msg = String.format(meta.name() + ": called with param [%s]. Not used.", param);
-					LOG.warning(msg);
+					LOG.warn(msg);
 				}
 				
 				DomainEntityContainer  container = (DomainEntityContainer) ServiceLocator.locator().get(meta.service());
 				if (container == null)
 				{
 					String   msg = String.format(meta.name() + ": Could not locate service [%s]. Abort.", meta.service());
-					LOG.severe(msg);
+					LOG.error(msg);
 					return;
 				}
 
@@ -328,7 +330,7 @@ public abstract class ActionBuilderBase
 				if (cp == null)
 				{
 					String msg = String.format("Unable to retrieve command processor from ServiceLocator");
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				
@@ -353,7 +355,7 @@ public abstract class ActionBuilderBase
 				else
 				{
 					String msg = String.format("Command rejected: [%s]", command.toString());
-					LOG.warning(msg);
+					LOG.warn(msg);
 				}
 			}
 		};
@@ -383,7 +385,7 @@ public abstract class ActionBuilderBase
 				if (cp == null)
 				{
 					String msg = String.format("Unable to retrieve command processor from ServiceLocator");
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				
@@ -400,7 +402,7 @@ public abstract class ActionBuilderBase
 				else
 				{
 					String msg = String.format("Command rejected: [%s]", command.toString());
-					LOG.warning(msg);
+					LOG.warn(msg);
 				}
 
 			}
@@ -433,7 +435,7 @@ public abstract class ActionBuilderBase
 				if (cp == null)
 				{
 					String msg = String.format("Unable to retrieve command processor from ServiceLocator");
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				
@@ -450,7 +452,7 @@ public abstract class ActionBuilderBase
 				else
 				{
 					String msg = String.format("Command rejected: [%s]", command.toString());
-					LOG.warning(msg);
+					LOG.warn(msg);
 				}
 
 			}
@@ -466,7 +468,8 @@ public abstract class ActionBuilderBase
 			@Override
 			protected void internal_invoke(Object param)
 			{
-				GraphDatabaseService db = NeoUtil.acquireAndConfigureDbService();
+				ProgramComponents    pc = DaggerProgramComponents.create();
+				GraphDatabaseService db = pc.databaseService();
 	
 				try (Transaction tx = db.beginTx())
 				{
@@ -497,7 +500,9 @@ public abstract class ActionBuilderBase
 
 				String cypher = bindCypherParameters(template, map);
 				
-				GraphDatabaseService db = NeoUtil.acquireAndConfigureDbService();
+				ProgramComponents    pc = DaggerProgramComponents.create();
+				GraphDatabaseService db = pc.databaseService();
+	
 	
 				try (Transaction tx = db.beginTx())
 				{
@@ -543,7 +548,8 @@ public abstract class ActionBuilderBase
 			@Override
 			protected void internal_invoke(Object param)
 			{
-				GraphDatabaseService db = NeoUtil.acquireAndConfigureDbService();
+				ProgramComponents    pc = DaggerProgramComponents.create();
+				GraphDatabaseService db = pc.databaseService();
 	
 				try (Transaction tx = db.beginTx())
 				{

@@ -2,13 +2,15 @@ package xivvic.roost.console.action;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.console.action.Action;
 
 public class ActionRegistry
 {
-	private final static Logger LOG = Logger.getLogger(ActionRegistry.class.getName()); 
+	private final static Logger LOG = LoggerFactory.getLogger(ActionRegistry.class.getName()); 
 	
 	
 	private static Map<String, Action> registry = new HashMap<>();
@@ -19,7 +21,7 @@ public class ActionRegistry
 		if (name == null)
 		{
 			String msg = "Attempt to retrieve action using a null name";
-			LOG.warning(msg);
+			LOG.warn(msg);
 			return null;
 		}
 		
@@ -65,7 +67,7 @@ public class ActionRegistry
 		if (action == null)
 		{
 			String msg = "Attempt to store a null action";
-			LOG.warning(msg);
+			LOG.warn(msg);
 			return null;
 		}
 		
@@ -73,7 +75,7 @@ public class ActionRegistry
 		if (name == null)
 		{
 			String msg = "Action to be stored has a null name.  Not storing";
-			LOG.warning(msg);
+			LOG.warn(msg);
 			return null;
 		}
 		

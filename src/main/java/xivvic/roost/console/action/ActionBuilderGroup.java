@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
@@ -40,7 +42,7 @@ import xivvic.roost.service.GroupService;
 public class ActionBuilderGroup
 	extends ActionBuilderBase
 {
-	private final static Logger LOG = Logger.getLogger(ActionBuilderGroup.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(ActionBuilderGroup.class.getName());
 	
 	public ActionBuilderGroup()
 	{
@@ -66,7 +68,7 @@ public class ActionBuilderGroup
 				if (service == null)
 				{
 					String   msg = String.format(name + ": DI returned null service");
-					LOG.severe(msg);
+					LOG.error(msg);
 					return;
 				}
 

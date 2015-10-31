@@ -77,7 +77,7 @@ public class Link
 				String         right = key_two + ":" + value_two;
 				String           msg = String.format("Unable to find relationship for (%s) -- [:%s] -- (%s).", left, rel_type, right);
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
-				LOG.warning(msg);
+				LOG.warn(msg);
 				tx.success();
 				return result;
 			}

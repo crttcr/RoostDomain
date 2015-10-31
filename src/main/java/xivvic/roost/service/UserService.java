@@ -2,7 +2,9 @@ package xivvic.roost.service;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.roost.dao.UserDao;
 import xivvic.roost.domain.DomainEntity;
@@ -11,12 +13,12 @@ import xivvic.roost.domain.User;
 public class UserService
 	implements DomainEntityContainer
 {
-	private final static Logger LOG = Logger.getLogger(UserService.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(UserService.class.getName());
 	private final UserDao dao;
 	
 	public UserService(UserDao dao)
 	{
-		LOG.fine(this.getClass().getSimpleName() + ": Created.");
+		LOG.info(this.getClass().getSimpleName() + ": Created.");
 		this.dao = dao;
 	}
 	

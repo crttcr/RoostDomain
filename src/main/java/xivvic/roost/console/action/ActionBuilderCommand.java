@@ -3,7 +3,9 @@ package xivvic.roost.console.action;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.command.Command;
 import xivvic.command.CommandProcessor;
@@ -29,7 +31,7 @@ import xivvic.roost.service.ServiceLocator;
 public class ActionBuilderCommand
 	extends ActionBuilderBase
 {
-	private final static Logger LOG = Logger.getLogger(ActionBuilderCommand.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(ActionBuilderCommand.class.getName());
 	
 	public ActionBuilderCommand()
 	{
@@ -56,7 +58,7 @@ public class ActionBuilderCommand
 				{
 					int     dv = 5;
 					String msg = String.format("Using default count of %s", dv);
-					LOG.fine(msg);
+					LOG.info(msg);
 					count      = dv;
 				}
 				
@@ -87,7 +89,7 @@ public class ActionBuilderCommand
 				if (map == null)
 				{
 					String msg = String.format("Status request requires an id");
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				
@@ -95,7 +97,7 @@ public class ActionBuilderCommand
 				if (id == null)
 				{
 					String msg = String.format("Status request requires an id");
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				

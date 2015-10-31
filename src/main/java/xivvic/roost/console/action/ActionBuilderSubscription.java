@@ -8,7 +8,9 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
@@ -42,7 +44,7 @@ import xivvic.util.identity.RandomString;
 public class ActionBuilderSubscription
 	extends ActionBuilderBase
 {
-	private final static Logger LOG = Logger.getLogger(ActionBuilderSubscription.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(ActionBuilderSubscription.class.getName());
 	
 	public ActionBuilderSubscription()
 	{
@@ -68,7 +70,7 @@ public class ActionBuilderSubscription
 				if (service == null)
 				{
 					String   msg = String.format(name + ": DI returned null service");
-					LOG.severe(msg);
+					LOG.error(msg);
 					return;
 				}
 
@@ -172,7 +174,7 @@ public class ActionBuilderSubscription
 				if (map == null)
 				{
 					String   msg = String.format(meta.name() + ": called with invalid params [%s]. Expecting \"%s:p123\". Abort.", param, User.PROP_ID);
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				
@@ -212,7 +214,7 @@ public class ActionBuilderSubscription
 				if (map == null)
 				{
 					String   msg = String.format(meta.name() + ": called with invalid params [%s]. Expecting \"%s:e123\". Abort.", param, Event.PROP_ID);
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				

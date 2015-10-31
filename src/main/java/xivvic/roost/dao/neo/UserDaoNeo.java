@@ -2,7 +2,6 @@ package xivvic.roost.dao.neo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -11,6 +10,8 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.neotest.program.RoostNodeType;
 import xivvic.neotest.program.RoostRelType;
@@ -23,7 +24,7 @@ public class UserDaoNeo
 	extends DaoNeo
 	implements UserDao
 {
-	private final static Logger LOG = Logger.getLogger(UserDaoNeo.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(UserDaoNeo.class.getName());
 	
 	public UserDaoNeo(GraphDatabaseService gdb)
 	{
@@ -153,7 +154,7 @@ public class UserDaoNeo
 			if (user == null)
 			{
 				String msg = "Found user node, but failed to hydrate";
-				LOG.warning(msg);
+				LOG.warn(msg);
 			}
 			
 			tx.success();

@@ -33,7 +33,7 @@ extends NeoCommandHandler
 		if (finder_one == null)
 		{
 			String msg = String.format("Cannout modify link without locator for first node");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
 		}
@@ -41,7 +41,7 @@ extends NeoCommandHandler
 		if (finder_two == null)
 		{
 			String msg = String.format("Cannout modify link without locator for second node");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
 		}
@@ -66,7 +66,7 @@ extends NeoCommandHandler
 				String           msg = String.format("Failed to find node of type %s with property %s=%s", label_one, key_one, nodeOneValue);
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
 				tx.success();
-				LOG.warning(msg);
+				LOG.warn(msg);
 				return result;
 			}
 
@@ -93,7 +93,7 @@ extends NeoCommandHandler
 				String           msg = String.format("Failed to specified relationship of type %s from node with %s=%s", schema.type(), key_one, nodeOneValue);
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
 				tx.success();
-				LOG.warning(msg);
+				LOG.warn(msg);
 				return result;
 			}
 

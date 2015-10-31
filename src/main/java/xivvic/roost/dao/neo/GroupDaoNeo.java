@@ -3,7 +3,6 @@ package xivvic.roost.dao.neo;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
@@ -11,6 +10,8 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.neotest.program.RoostNodeType;
 import xivvic.neotest.program.RoostRelType;
@@ -22,7 +23,7 @@ public class GroupDaoNeo
 	extends DaoNeo
 	implements GroupDao
 {
-	private final static Logger LOG = Logger.getLogger(GroupDaoNeo.class.getName()); 
+	private final static Logger LOG = LoggerFactory.getLogger(GroupDaoNeo.class.getName()); 
 	public static final RoostRelType MEMBER_OF_GROUP = RoostRelType.GROUP_MEMBER;
 	
 	public GroupDaoNeo(GraphDatabaseService gdb)
@@ -40,7 +41,7 @@ public class GroupDaoNeo
 		if (name == null)
 		{
 			String msg = String.format("Name parameter is null");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			return null;
 		}
 		

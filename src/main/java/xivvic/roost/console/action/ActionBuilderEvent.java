@@ -8,7 +8,9 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
@@ -41,7 +43,7 @@ import xivvic.util.time.TimeUtil;
 public class ActionBuilderEvent
 	extends ActionBuilderBase
 {
-	private final static Logger LOG = Logger.getLogger(ActionBuilderEvent.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(ActionBuilderEvent.class.getName());
 
 	public ActionBuilderEvent()
 	{
@@ -67,7 +69,7 @@ public class ActionBuilderEvent
 				if (service == null)
 				{
 					String   msg = String.format(name + ": DI returned null service");
-					LOG.severe(msg);
+					LOG.error(msg);
 					return;
 				}
 
@@ -165,7 +167,7 @@ public class ActionBuilderEvent
 				if (map == null)
 				{
 					String   msg = String.format(meta.name() + ": called with invalid params [%s]. Expecting \"%s:p123\". Abort.", param, Person.PROP_ID);
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				

@@ -5,9 +5,9 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.auto.value.AutoValue;
 
 import xivvic.event.Nullable;
@@ -19,8 +19,6 @@ import xivvic.event.Nullable;
  *
  */
 @AutoValue
-// FIXME: How to deserialize with a factory method, not a builder class
-@JsonDeserialize(builder=Event.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Event 
 	implements DomainEntity
@@ -80,6 +78,7 @@ public abstract class Event
 	@JsonProperty("text")
 	public abstract String text();
 	
+	@JsonCreator
 	public static Event create(String id, LocalDate date, LocalTime time, EventType type, String text)
 	{
 		return new AutoValue_Event(id, date, time, type, text);

@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
@@ -38,7 +40,7 @@ import xivvic.roost.service.AddressService;
 public class ActionBuilderAddress
 	extends ActionBuilderBase
 {
-	private final static Logger LOG = Logger.getLogger(ActionBuilderAddress.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(ActionBuilderAddress.class.getName());
 	
 	public ActionBuilderAddress()
 	{
@@ -64,7 +66,7 @@ public class ActionBuilderAddress
 				if (service == null)
 				{
 					String   msg = String.format(name + ": DI returned null service");
-					LOG.severe(msg);
+					LOG.error(msg);
 					return;
 				}
 

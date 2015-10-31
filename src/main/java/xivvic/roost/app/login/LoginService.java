@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.roost.dao.UserDao;
 import xivvic.roost.domain.User;
@@ -12,7 +14,7 @@ import xivvic.util.password.PasswordUtil;
 
 public class LoginService
 {
-	private final static Logger LOG = Logger.getLogger(LoginService.class.getName()); 
+	private final static Logger LOG = LoggerFactory.getLogger(LoginService.class.getName()); 
 	
 	private Map<String, LoginInformation> active_users = new HashMap<>();
 	private final UserDao dao;

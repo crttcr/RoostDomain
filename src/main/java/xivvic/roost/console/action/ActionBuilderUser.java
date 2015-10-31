@@ -7,9 +7,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
 
 import org.neo4j.graphdb.RelationshipType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xivvic.command.Command;
 import xivvic.command.CommandBase;
@@ -59,7 +60,7 @@ import xivvic.util.identity.RandomString;
 public class ActionBuilderUser
 	extends ActionBuilderBase
 {
-	private final static Logger           LOG = Logger.getLogger(ActionBuilderUser.class.getName());
+	private final static Logger           LOG = LoggerFactory.getLogger(ActionBuilderUser.class.getName());
 	private final static RandomString   idgen = new RandomString(16);
 	public static final String PLAINTEXT = "PWD_PLAINTEXT";
 	
@@ -89,7 +90,7 @@ public class ActionBuilderUser
 				if (service == null)
 				{
 					String   msg = String.format(name + ": DI returned null service");
-					LOG.severe(msg);
+					LOG.error(msg);
 					return;
 				}
 
@@ -172,7 +173,7 @@ public class ActionBuilderUser
 				if (cp == null)
 				{
 					String msg = String.format("Unable to retrieve command processor from ServiceLocator");
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 
@@ -190,7 +191,7 @@ public class ActionBuilderUser
 				else
 				{
 					String msg = String.format("Command failed: [%s]", command.toString());
-					LOG.warning(msg);
+					LOG.warn(msg);
 				}
 			}
 		};
@@ -334,7 +335,7 @@ public class ActionBuilderUser
 				{
 					String name = this.getClass().getCanonicalName();
 					String  msg = String.format("Null parameter to action [%s]", name);
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				
@@ -347,14 +348,14 @@ public class ActionBuilderUser
 				if (trim.length() < 3)
 				{
 					String msg = "Parameter [" + string + "] too short for login action.";
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				
 				if (! trim.contains(" "))
 				{
 					String msg = "Parameter [" + string + "] does not have separate identity and auth tokens.";
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 				
@@ -390,7 +391,7 @@ public class ActionBuilderUser
 				else
 				{
 					String msg = String.format("Login failure for username[%s] and secret[%s]", u_name, secret);
-					LOG.warning(msg);
+					LOG.warn(msg);
 					return;
 				}
 			}

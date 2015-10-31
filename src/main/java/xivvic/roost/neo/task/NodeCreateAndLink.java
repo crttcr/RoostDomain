@@ -47,7 +47,7 @@ extends NeoCommandHandler
 		if (node_1_schema == null)
 		{
 			String msg = String.format("Cannout CREATE_AND_LINK Node with null schema information on first node");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
 		}
@@ -55,7 +55,7 @@ extends NeoCommandHandler
 		if (node_2_loc == null)
 		{
 			String msg = String.format("Cannout CREATE_AND_LINK Node with null schema information on second node");
-			LOG.warning(msg);
+			LOG.warn(msg);
 			CommandResult result = CommandResult.failure(cmd.id(), msg);
 			return result;
 		}
@@ -70,7 +70,7 @@ extends NeoCommandHandler
 			if (node2 == null)
 			{
 				String msg = String.format("Node(:%s) with %s=%s not found. Cannot link. Abort.", nodeTwoLabel, nodeTwoKey, nodeTwoValue);
-				LOG.warning(msg);
+				LOG.warn(msg);
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
 				tx.success();
 				return result;
@@ -83,7 +83,7 @@ extends NeoCommandHandler
 				String           msg = String.format("Failed to create node of type %s",   label_one);
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
 				tx.success();
-				LOG.warning(msg);
+				LOG.warn(msg);
 				return result;
 			}
 			
@@ -95,7 +95,7 @@ extends NeoCommandHandler
 				String           msg = String.format("Failed to create node of type %s",   label_one);
 				CommandResult result = CommandResult.failure(cmd.id(), msg);
 				tx.success();
-				LOG.warning(msg);
+				LOG.warn(msg);
 				return result;
 			}
 
