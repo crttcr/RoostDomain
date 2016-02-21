@@ -3,6 +3,8 @@ package xivvic.roost.dao.neo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
@@ -26,6 +28,7 @@ public class UserDaoNeo
 {
 	private final static Logger LOG = LoggerFactory.getLogger(UserDaoNeo.class.getName());
 	
+	@Inject
 	public UserDaoNeo(GraphDatabaseService gdb)
 	{
 		super(gdb);

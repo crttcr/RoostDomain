@@ -3,6 +3,8 @@ package xivvic.roost.service;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +18,7 @@ public class UserService
 	private final static Logger LOG = LoggerFactory.getLogger(UserService.class.getName());
 	private final UserDao dao;
 	
+	@Inject
 	public UserService(UserDao dao)
 	{
 		LOG.info(this.getClass().getSimpleName() + ": Created.");

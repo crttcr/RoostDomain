@@ -17,6 +17,7 @@ import dagger.Provides;
  * 
  * @author Reid
  */
+@Singleton
 @Module
 public class Neo4jDatabaseModule
 {
@@ -25,13 +26,15 @@ public class Neo4jDatabaseModule
 	public static final String PERSISTENT = "persistent";
 	public static final String  TRANSIENT = "transient";
 	
-	boolean called = false;
+	volatile boolean called = false;
 	
 	@Provides
 	@Singleton
 //	@Named(PERSISTENT)
 	public GraphDatabaseService providePersistentDb()
 	{
+		LOG.warn("Request for DB connection.  Called = " + called + " this: " + this);
+		
 		if (called)
 		{
 			LOG.error("Provide persistent DB has been called before. Should be singleton instance.");
@@ -39,8 +42,8 @@ public class Neo4jDatabaseModule
 		}
 		else
 		{
-			LOG.warn("DB Construction Called.");
 			called = true;
+			LOG.warn("Set called = " + called);
 		}
 
 		GraphDatabaseService graphDb = new GraphDatabaseFactory()

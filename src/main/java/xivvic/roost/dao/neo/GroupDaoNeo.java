@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
@@ -26,6 +28,7 @@ public class GroupDaoNeo
 	private final static Logger LOG = LoggerFactory.getLogger(GroupDaoNeo.class.getName()); 
 	public static final RoostRelType MEMBER_OF_GROUP = RoostRelType.GROUP_MEMBER;
 	
+	@Inject
 	public GroupDaoNeo(GraphDatabaseService gdb)
 	{
 		super(gdb);

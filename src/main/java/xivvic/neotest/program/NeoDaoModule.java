@@ -23,7 +23,9 @@ import xivvic.roost.dao.neo.UserDaoNeo;
  * 
  * @author Reid
  */
-@Module(includes=Neo4jDatabaseModule.class)
+@Module(
+		includes=Neo4jDatabaseModule.class
+		)
 public class NeoDaoModule
 {
 	@Provides

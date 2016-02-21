@@ -3,6 +3,8 @@ package xivvic.roost.service;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +19,7 @@ public class GroupService
 	private final static Logger LOG = LoggerFactory.getLogger(GroupService.class.getName()); 
 	private final GroupDao dao;
 	
+	@Inject
 	public GroupService(GroupDao dao)
 	{
 		LOG.info(this.getClass().getSimpleName() + ": Created.");
